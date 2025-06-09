@@ -19,14 +19,7 @@ export default Gameboard = (arrSize) => {
   };
 
   let gameboardPositions = getGameboard();
-
-  let fleet = [
-    // { shipType: "carrier", inBattle: false, shipCoordinates: [] },
-    // { shipType: "battleship", inBattle: true, shipCoordinates: [] },
-    // { shipType: "cruiser", inBattle: false, shipCoordinates: [] },
-    // { shipType: "submarine", inBattle: false, shipCoordinates: [] },
-    // { shipType: "destroyer", inBattle: false, shipCoordinates: [] },
-  ];
+  let fleet = [];
 
   function receiveAttack(targetedCoordinates) {
     if (
