@@ -45,8 +45,6 @@ body {
 
 input,
 button {
-    padding: 0;
-    margin: 0;
     box-sizing: border-box;
     appearance: none;
     background-color: var(--tertiary-color);
@@ -57,9 +55,15 @@ button {
 }
 
 input {
+    padding: 1rem;
     width: 25rem;
     height: 2rem;
     opacity: 1;
+}
+
+input:hover {
+    cursor: pointer;
+    box-shadow: 2px 2px 2px white;
 }
 
 button {
@@ -152,27 +156,27 @@ menu {
 }
 
 fieldset {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     background-color: var(--primary-color);
     color: var(--quaternary-color);
     opacity: 0.9;
     border: 9px solid var(--quartenary-color);
     border-style: double;
     border-radius: 20px;
+    padding: 2rem 0rem 0 25rem;
 }
 
 fieldset>p {
     font-size: large;
-    color: var(--quartenary-color)
+    color: var(--quartenary-color);
 }
 
-fieldset>p:first-child {
+
+fieldset>p:nth-child(3) {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
+    margin-top: 2rem;
 }
 
 fieldset>p:nth-child(2) {
@@ -240,8 +244,8 @@ input[type="checkbox"]:hover {
     position: absolute;
     content: '';
     background-image: url("../pictures/arctic_fleet.jpeg");
-    width: 3rem;
-    height: 2.9rem;
+    width: 4rem;
+    height: 4rem;
     display: inline-block;
     top: 0.7rem;
     left: 7rem;
@@ -253,11 +257,91 @@ input[type="checkbox"]:hover {
     position: absolute;
     content: '';
     background-image: url("../pictures/burning_battlecruiser.jpg");
-    width: 3rem;
-    height: 2.9rem;
+    width: 4rem;
+    height: 4rem;
     display: inline-block;
     top: 0.7rem;
     right: 7rem;
     background-size: cover;
     border-radius: 20px;
+}
+
+/* TOGGLE BUTTON  CODE */
+.toggle-checkbox-wrapper {
+    min-width: 35rem;
+}
+
+.toggle-checkbox {
+    display: none;
+}
+
+.slider {
+    position: relative;
+    cursor: pointer;
+}
+
+/* ellipsis */
+.slider::before {
+    background: lightblue;
+    border-radius: 34px;
+    bottom: 0;
+    content: '';
+    height: 24px;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    width: 40px;
+}
+
+/* circle */
+.slider::after {
+    background: var(--tertiary-color);
+    border-radius: 50%;
+    bottom: 0;
+    content: '';
+    height: 16px;
+    left: 18px;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    transition: 0.4s;
+    width: 16px;
+}
+
+.toggle-switch {
+    margin-left: 50px;
+}
+
+.toggle-switch.opt1 {
+    color: var(--quaternary-color);
+}
+
+.toggle-switch.opt2 {
+    color: var(--secondary-color);
+    display: none;
+}
+
+.toggle-checkbox:checked+.slider::before {
+    background-color: var(--tertiary-color);
+}
+
+.toggle-checkbox:checked+.slider::after {
+    background-color: var(--secondary-color);
+    transform: translateX(16px);
+}
+
+.toggle-checkbox:checked~.slider>.toggle-switch.opt1 {
+    display: none;
+}
+
+.toggle-checkbox:checked~.slider>.toggle-switch.opt2 {
+    display: inline-block;
+}
+
+.slider {
+    background-color: var(--primary-color);
+}
+
+.secondaryLabel {
+    display: inline;
 }
