@@ -109,7 +109,6 @@ menu {
     height: 100dvh;
     min-width: 600px;
     background-image: url("../pictures/horizontal_board.jpeg");
-    opacity: 1;
     border: 0.2rem solid black;
     background-size: cover;
 }
@@ -117,7 +116,6 @@ menu {
 .welcomeAdmiralDialog {
     flex-grow: 1;
     padding: 0.5rem;
-    opacity: 1;
 }
 
 .newGameDialog {
@@ -129,6 +127,15 @@ menu {
     background-image: url("../pictures/icon.jpg");
     border: 9px solid var(--quartenary-color);
     border-style: double;
+}
+
+.newGameDialog::backdrop {
+    background-image: linear-gradient(45deg,
+            var(--primary-color),
+            var(--secondary-color),
+            var(--tertiary-color),
+            var(--quaternary-color));
+    opacity: 0.75;
 }
 
 #newGameDialogForm {
@@ -143,7 +150,7 @@ fieldset {
     align-items: center;
     background-color: var(--primary-color);
     color: var(--quaternary-color);
-    opacity: 0.8;
+    opacity: 0.9;
     border: 9px solid var(--quartenary-color);
     border-style: double;
 }
