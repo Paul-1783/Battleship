@@ -1,5 +1,6 @@
 import startScreen from "./startScreen/start";
 
-let elem = document.querySelector(".baseBody");
-elem.appendChild(startScreen());
+const elem = document.querySelector(".baseBody");
+let start = startScreen();
+elem.appendChild(start);
 elem.querySelector(".newGameDialog").showModal();

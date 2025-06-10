@@ -52,13 +52,13 @@ button {
     background-color: var(--tertiary-color);
     font-family: inherit;
     font-size: large;
-    color: var(--secondary-color)
+    color: var(--secondary-color);
+    border-radius: 20px;
 }
 
 input {
     width: 25rem;
     height: 2rem;
-    border-radius: 20px;
     opacity: 1;
 }
 
@@ -75,6 +75,7 @@ button {
 button::before {
     content: '';
     position: absolute;
+    border-radius: 20px;
     top: 0;
     left: 0;
     right: 0;
@@ -86,7 +87,7 @@ button::before {
 }
 
 button:hover {
-    color: var(--primary-color)
+    color: white;
 }
 
 button:hover::before,
@@ -116,17 +117,22 @@ menu {
 .welcomeAdmiralDialog {
     flex-grow: 1;
     padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
 .newGameDialog {
     display: flex;
     flex-direction: column;
-    height: 75%;
-    width: 50%;
-    border-radius: 5px;
+    height: 85%;
+    width: 75%;
     background-image: url("../pictures/icon.jpg");
-    border: 9px solid var(--quartenary-color);
-    border-style: double;
+    border: 10px solid var(--quartenary-color);
+    border-style: ridge;
+    position: relative;
+    border-radius: 20px;
 }
 
 .newGameDialog::backdrop {
@@ -141,7 +147,8 @@ menu {
 #newGameDialogForm {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
+    position: relative;
 }
 
 fieldset {
@@ -153,6 +160,7 @@ fieldset {
     opacity: 0.9;
     border: 9px solid var(--quartenary-color);
     border-style: double;
+    border-radius: 20px;
 }
 
 fieldset>p {
@@ -219,8 +227,37 @@ input[type="checkbox"]:hover {
     box-shadow: 2px 2px 2px var(--secondary-color);
 }
 
-.navalHistoryTop {
-    flex-grow: 0.2;
-    padding: 0.5rem;
+.navalHistoryHeader {
+    position: relative;
+    text-align: center;
+    font-family: seasideresortnfregular;
+    font-size: xxx-large;
+    padding: 0;
+    margin: 0;
+}
 
+.navalHistoryHeader::before {
+    position: absolute;
+    content: '';
+    background-image: url("../pictures/arctic_fleet.jpeg");
+    width: 3rem;
+    height: 2.9rem;
+    display: inline-block;
+    top: 0.7rem;
+    left: 7rem;
+    background-size: cover;
+    border-radius: 20px;
+}
+
+.navalHistoryHeader::after {
+    position: absolute;
+    content: '';
+    background-image: url("../pictures/burning_battlecruiser.jpg");
+    width: 3rem;
+    height: 2.9rem;
+    display: inline-block;
+    top: 0.7rem;
+    right: 7rem;
+    background-size: cover;
+    border-radius: 20px;
 }
