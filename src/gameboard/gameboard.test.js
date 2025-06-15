@@ -5,7 +5,7 @@ describe("checks gameboard functionality with 9x9 gameboard", () => {
   let testBoard;
 
   beforeEach(() => {
-    testBoard = Gameboard(9);
+    testBoard = Gameboard();
   });
 
   test("should abort for coordinates array not having arity 2", () => {

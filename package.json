@@ -12,7 +12,8 @@
   "jest": {
     "moduleFileExtensions": [
       "js",
-      "jsx"
+      "jsx",
+      "css"
     ],
     "moduleDirectories": [
       "node_modules",

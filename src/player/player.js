@@ -7,7 +7,7 @@ export default Player = (pt) => {
     return pType;
   };
 
-  let adjacentBoard = Gameboard(18);
+  let adjacentBoard = Gameboard();
 
   let typeOfPlayer = playerType(pt);
 

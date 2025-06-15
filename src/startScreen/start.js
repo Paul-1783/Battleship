@@ -6,8 +6,7 @@ export default function startScreen() {
   startScreen.insertAdjacentHTML(
     "beforeend",
     `
-        <section class="welcomeAdmiralDialog">
-             <dialog class="newGameDialog">
+            <dialog class="newGameDialog">
               <form action="" method="dialog" id="newGameDialogForm">
                 <h1 class="navalHistoryHeader">Battleship - the Game</h1>
                      <fieldset>
@@ -49,8 +48,7 @@ export default function startScreen() {
                   </menu>
               </form>
             </dialog>
-         </section>
-         `
+          `
   );
   return startScreen;
 }

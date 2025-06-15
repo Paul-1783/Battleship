@@ -1,13 +1,12 @@
-import { esm } from "webpack";
 import Ship from "../ship/ship.js";
 
-export default Gameboard = (arrSize) => {
+let gameboard = () => {
   let getGameboard = () => {
     let positionHelper = [];
     let i = 0;
-    while (i < arrSize) {
+    while (i < 10) {
       positionHelper[i] = [];
-      for (let d = 0; d < arrSize; ++d) {
+      for (let d = 0; d < 10; ++d) {
         positionHelper[i][d] = {
           fieldStatus: "empty",
           indexedInFleet: -1,
@@ -118,3 +117,5 @@ export default Gameboard = (arrSize) => {
     isFleetSunk,
   };
 };
+
+export default gameboard;
