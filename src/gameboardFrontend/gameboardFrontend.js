@@ -3,8 +3,9 @@ import "./gameboardFrontend.css";
 import retrieveStoredData from "../allThingsStorageRelated/retrieveStoredData";
 
 let gameFront = (function () {
+  const boardComplete = document.createElement("section");
+
   function buildGameBoard(baseBody, start) {
-    const boardComplete = document.createElement("section");
     boardComplete.classList.add("gameboardWrapper");
 
     boardComplete.insertAdjacentElement(
@@ -42,9 +43,9 @@ let gameFront = (function () {
     for (let i = 0; i < 100; ++i) {
       const field = document.createElement("div");
       field.classList.add("gameField");
+      field.classList.add(i.toString());
       singleBoard.insertAdjacentElement("beforeend", field);
     }
-
     return singleBoard;
   }
 
@@ -55,7 +56,15 @@ let gameFront = (function () {
     return desk;
   }
 
-  return { buildInfoTable, buildGameBoard };
+  function getBoardPlayer1() {
+    return boardComplete.querySelector(".boardPlayerOne");
+  }
+
+  function getBoardPlayer2() {
+    return boardComplete.querySelector(".boardPlayerTwo");
+  }
+
+  return { buildInfoTable, buildGameBoard, getBoardPlayer1, getBoardPlayer2 };
 })();
 
 export default gameFront;

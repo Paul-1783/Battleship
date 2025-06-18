@@ -17,11 +17,11 @@ export default function startScreen() {
                       </p>
                       <p>
                         <span class="toggle-checkbox-wrapper">
-                          <label  for="toggle1">Would you prefer to have an AI play in your place?</label>
+                          <label class="secondaryLabel" for="toggle1">Would you prefer to have an AI play in your place?</label>
                           <input class="toggle-checkbox" type="checkbox" id="toggle1">
                             <label class="slider" for="toggle1">
-                              <span class="toggle-switch opt1">Yes</span>
-                              <span class="toggle-switch opt2">No</span>
+                              <span class="toggle-switch opt1">No</span>
+                              <span class="toggle-switch opt2">Yes</span>
                             </label>
                           </span>
                       </p>
@@ -37,8 +37,8 @@ export default function startScreen() {
                             <label class="secondaryLabel" for="toggle2">Would you prefer to have an AI play in your place?</label>
                             <input class="toggle-checkbox" type="checkbox" id="toggle2">
                               <label class="slider" for="toggle2">
-                                <span class="toggle-switch opt1">Yes</span>
-                                <span class="toggle-switch opt2">No</span>
+                                <span class="toggle-switch opt1">No</span>
+                                <span class="toggle-switch opt2">Yes</span>
                               </label>
                            </span>
                         </p>

@@ -1,11 +1,12 @@
 import Gameboard from "../gameboard/gameboard";
 
-export default Player = (pt) => {
+let Player = (pt, pName) => {
   let playerType = (pType) => {
-    if (pType !== "real" && pType !== "computer")
-      throw new Error("player type not allowed");
-    return pType;
+    if (!pType) return "real";
+    return "computer";
   };
+
+  let playerName = pName;
 
   let adjacentBoard = Gameboard();
 
@@ -19,5 +20,11 @@ export default Player = (pt) => {
     return typeOfPlayer;
   }
 
-  return { getPlayerGameBoard, getTypeOfPlayer };
+  function getPlayerName() {
+    return playerName;
+  }
+
+  return { getPlayerGameBoard, getTypeOfPlayer, getPlayerName };
 };
+
+export default Player;
