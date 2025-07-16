@@ -47,7 +47,7 @@ body {
     --system-ui: 'bodonitownregular', 'seasideresortnfregular';
 }
 
-h1 {
+.gameInfo {
     background-color: #778da9;
     padding: 0.2rem 0.5rem;
     border-radius: 5px;
@@ -76,12 +76,21 @@ h1 {
     gap: 0.5rem;
 }
 
-.gameField {
+.fieldButton {
     outline: 2px solid var(--quaternary-color);
+    max-width: 2.8rem;
+}
+
+.fieldButton:hover {
+    box-shadow: 2px 4px 13px white;
 }
 
 .occupied {
     background-color: black;
+}
+
+.miss {
+    background-color: aqua;
 }
 
 .hit {

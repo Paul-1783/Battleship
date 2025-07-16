@@ -1,10 +1,9 @@
 import startScreen from "./startScreen/start";
 import storeEverything from "./allThingsStorageRelated/store";
-import retrieveStoredData from "./allThingsStorageRelated/retrieveStoredData";
-import gameboard from "./gameboard/gameboard.js";
 import gameFront from "./gameboardFrontend/gameboardFrontend.js";
 import oneRound from "./courseOfGame/courseOfGame.js";
 import Player from "./player/player.js";
+import playTheGame from "./courseOfGame/playTheGame.js";
 
 const baseBody = document.querySelector(".baseBody");
 let start = startScreen();
@@ -20,13 +19,10 @@ startButton.addEventListener("click", () => {
   let player2Name = start.querySelector("#player2Name").value;
   let player2Type = start.querySelector("#toggle2").checked;
 
-  console.log(player1Type);
-
   gameFront.buildGameBoard(baseBody, start);
-  gameFront.buildInfoTable(baseBody);
 
-  oneRound.playTheGame(
-    Player(player1Type, player1Name),
-    Player(player2Type, player2Name)
-  );
+  let player1 = Player(player1Type, player1Name);
+  let player2 = Player(player2Type, player2Name);
+  oneRound.initializeGame(player1, player2);
+  playTheGame(player1, player2);
 });

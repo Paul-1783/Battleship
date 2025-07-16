@@ -1,9 +1,10 @@
-import gameboard from "../gameboard/gameboard";
 import "./gameboardFrontend.css";
 import retrieveStoredData from "../allThingsStorageRelated/retrieveStoredData";
+import markField from "./markField";
 
 let gameFront = (function () {
   const boardComplete = document.createElement("section");
+  let baseBodyRef = null;
 
   function buildGameBoard(baseBody, start) {
     boardComplete.classList.add("gameboardWrapper");
@@ -26,6 +27,8 @@ let gameFront = (function () {
     );
 
     baseBody.replaceChild(boardComplete, start);
+    buildInfoTable(baseBody);
+    baseBodyRef = baseBody;
   }
 
   function buildInfoTable(docking) {
@@ -41,12 +44,17 @@ let gameFront = (function () {
     singleBoard.classList.add("board");
     singleBoard.classList.add(boardName);
     for (let i = 0; i < 100; ++i) {
-      const field = document.createElement("div");
-      field.classList.add("gameField");
-      field.classList.add(i.toString());
+      const field = document.createElement("button");
+      buildField(field, i);
       singleBoard.insertAdjacentElement("beforeend", field);
     }
     return singleBoard;
+  }
+
+  function buildField(field, i) {
+    field.classList.add("fieldButton");
+    field.classList.add(i.toString());
+    field.innerText = `${i.toString()}`;
   }
 
   function createFleetDesk(deskName) {
@@ -64,7 +72,19 @@ let gameFront = (function () {
     return boardComplete.querySelector(".boardPlayerTwo");
   }
 
-  return { buildInfoTable, buildGameBoard, getBoardPlayer1, getBoardPlayer2 };
+  function setInfoTable(info) {
+    let gameInfoHeader = baseBodyRef.querySelector(".gameInfo");
+    gameInfoHeader.innerText = info;
+  }
+
+  return {
+    buildInfoTable,
+    buildGameBoard,
+    getBoardPlayer1,
+    getBoardPlayer2,
+    markField,
+    setInfoTable,
+  };
 })();
 
 export default gameFront;
