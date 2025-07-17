@@ -41,9 +41,13 @@ async function playOneRound(player1, player2, i) {
   console.log("hier ", i);
 
   if (i % 2 !== 0) {
-    gameFront.setInfoTable("Player 1, take your shot.");
+    gameFront.setInfoTable(`${player1.getPlayerName()}, take your shot.`);
+    gameFront.disableBoard("player1");
+    gameFront.enableBoard("player2");
   } else {
-    gameFront.setInfoTable("Player 2, take your shot.");
+    gameFront.setInfoTable(`${player2.getPlayerName()}, take your shot.`);
+    gameFront.disableBoard("player2");
+    gameFront.enableBoard("player1");
   }
   let returnedIndex = await waitForButtonPressFunction();
   console.log("between", returnedIndex);

@@ -1,6 +1,6 @@
 import gameFront from "../gameboardFrontend/gameboardFrontend";
 
-let oneRound = (function () {
+let gameStart = (function () {
   function initializeGame(player1, player2) {
     populate1Board(
       player1,
@@ -75,4 +75,4 @@ function populate1Board(player, boardLogicPart, boardFrontPart) {
   }
 }
 
-export default oneRound;
+export default gameStart;

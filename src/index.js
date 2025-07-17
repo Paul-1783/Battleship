@@ -1,7 +1,7 @@
 import startScreen from "./startScreen/start";
 import storeEverything from "./allThingsStorageRelated/store";
 import gameFront from "./gameboardFrontend/gameboardFrontend.js";
-import oneRound from "./courseOfGame/courseOfGame.js";
+import gameStart from "./courseOfGame/courseOfGame.js";
 import Player from "./player/player.js";
 import playTheGame from "./courseOfGame/playTheGame.js";
 
@@ -23,6 +23,6 @@ startButton.addEventListener("click", () => {
 
   let player1 = Player(player1Type, player1Name);
   let player2 = Player(player2Type, player2Name);
-  oneRound.initializeGame(player1, player2);
+  gameStart.initializeGame(player1, player2);
   playTheGame(player1, player2);
 });

@@ -11,19 +11,22 @@ let gameFront = (function () {
 
     boardComplete.insertAdjacentElement(
       "afterbegin",
-      createFleetDesk("fleetDeskOne")
+      createFleetDesk("fleetDeskTwo")
     );
-    boardComplete.insertAdjacentElement(
-      "afterbegin",
-      createSingleBoard("boardPlayerOne")
-    );
+
     boardComplete.insertAdjacentElement(
       "afterbegin",
       createSingleBoard("boardPlayerTwo")
     );
+
     boardComplete.insertAdjacentElement(
       "afterbegin",
-      createFleetDesk("fleetDeskTwo")
+      createSingleBoard("boardPlayerOne")
+    );
+
+    boardComplete.insertAdjacentElement(
+      "afterbegin",
+      createFleetDesk("fleetDeskOne")
     );
 
     baseBody.replaceChild(boardComplete, start);
@@ -64,6 +67,34 @@ let gameFront = (function () {
     return desk;
   }
 
+  function disableBoard(playerName) {
+    if (playerName === "player1") {
+      let buttons = getBoardPlayer1().querySelectorAll(".fieldButton");
+      buttons.forEach((button) => {
+        button.disabled = true;
+      });
+    } else {
+      let buttons = getBoardPlayer2().querySelectorAll(".fieldButton");
+      buttons.forEach((button) => {
+        button.disabled = true;
+      });
+    }
+  }
+
+  function enableBoard(playerName) {
+    if (playerName === "player1") {
+      let buttons = getBoardPlayer1().querySelectorAll(".fieldButton");
+      buttons.forEach((button) => {
+        button.disabled = false;
+      });
+    } else {
+      let buttons = getBoardPlayer2().querySelectorAll(".fieldButton");
+      buttons.forEach((button) => {
+        button.disabled = false;
+      });
+    }
+  }
+
   function getBoardPlayer1() {
     return boardComplete.querySelector(".boardPlayerOne");
   }
@@ -84,6 +115,8 @@ let gameFront = (function () {
     getBoardPlayer2,
     markField,
     setInfoTable,
+    disableBoard,
+    enableBoard,
   };
 })();
 
