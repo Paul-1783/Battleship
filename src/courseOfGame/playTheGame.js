@@ -38,8 +38,6 @@ export default async function playTheGame(player1, player2) {
 }
 
 async function playOneRound(player1, player2, i) {
-  console.log("hier ", i);
-
   if (i % 2 !== 0) {
     gameFront.setInfoTable(`${player1.getPlayerName()}, take your shot.`);
     gameFront.disableBoard("player1");
@@ -50,7 +48,27 @@ async function playOneRound(player1, player2, i) {
     gameFront.enableBoard("player1");
   }
   let returnedIndex = await waitForButtonPressFunction();
-  console.log("between", returnedIndex);
+  const coordinates = getCoordinates(returnedIndex);
+  console.log("coordinates ", coordinates);
+  if (i % 2 !== 0) {
+    player1.getPlayerGameBoard().receiveAttack(coordinates);
+    gameFront.updatePlayerTable(
+      "player1",
+      returnedIndex,
+      player1.getPlayerGameBoard().getFieldStatus(coordinates)
+    );
+  } else {
+    player2.getPlayerGameBoard().receiveAttack(coordinates);
+    gameFront.updatePlayerTable(
+      "player2",
+      returnedIndex,
+      player2.getPlayerGameBoard().getFieldStatus(coordinates)
+    );
+  }
+}
+
+function getCoordinates(indexNumber) {
+  return [(indexNumber - (indexNumber % 10)) / 10, indexNumber % 10];
 }
 
 function addButtonsToEventBus(field) {

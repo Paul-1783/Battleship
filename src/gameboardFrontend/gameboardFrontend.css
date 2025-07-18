@@ -51,6 +51,13 @@ body {
     background-color: #778da9;
     padding: 0.2rem 0.5rem;
     border-radius: 5px;
+    text-align: center;
+}
+
+.playerHeader {
+    max-width: 80%;
+    padding: 1em 0;
+    margin: 0.5em auto;
 }
 
 .gameboardWrapper {

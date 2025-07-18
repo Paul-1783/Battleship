@@ -14,15 +14,21 @@ let gameFront = (function () {
       createFleetDesk("fleetDeskTwo")
     );
 
-    boardComplete.insertAdjacentElement(
+    const containerTwo = document.createElement("div");
+    containerTwo.insertAdjacentElement(
       "afterbegin",
       createSingleBoard("boardPlayerTwo")
     );
+    insertBoardTitle("player2", containerTwo);
+    boardComplete.insertAdjacentElement("afterbegin", containerTwo);
 
-    boardComplete.insertAdjacentElement(
+    const containerOne = document.createElement("div");
+    containerOne.insertAdjacentElement(
       "afterbegin",
       createSingleBoard("boardPlayerOne")
     );
+    insertBoardTitle("player1", containerOne);
+    boardComplete.insertAdjacentElement("afterbegin", containerOne);
 
     boardComplete.insertAdjacentElement(
       "afterbegin",
@@ -32,6 +38,18 @@ let gameFront = (function () {
     baseBody.replaceChild(boardComplete, start);
     buildInfoTable(baseBody);
     baseBodyRef = baseBody;
+  }
+
+  function insertBoardTitle(title, container) {
+    const boardTitle = document.createElement("p");
+    if (title === "player1") {
+      boardTitle.innerText = "Board Player 1";
+    } else {
+      boardTitle.innerText = "Board Player 2";
+    }
+    boardTitle.classList.add("gameInfo");
+    boardTitle.classList.add("playerHeader");
+    container.insertAdjacentElement("afterbegin", boardTitle);
   }
 
   function buildInfoTable(docking) {
@@ -108,6 +126,23 @@ let gameFront = (function () {
     gameInfoHeader.innerText = info;
   }
 
+  function updatePlayerTable(playerName, index, status) {
+    let board = null;
+    if (playerName === "player1") {
+      board = getBoardPlayer2();
+    } else if (playerName === "player2") {
+      board = getBoardPlayer1();
+    }
+
+    let buttons = board.querySelectorAll("button");
+    buttons.forEach((currentButton) => {
+      if (currentButton.classList[1] === index) {
+        currentButton.classList.remove(currentButton.classList[2]);
+        currentButton.classList.add(status);
+      }
+    });
+  }
+
   return {
     buildInfoTable,
     buildGameBoard,
@@ -117,6 +152,7 @@ let gameFront = (function () {
     setInfoTable,
     disableBoard,
     enableBoard,
+    updatePlayerTable,
   };
 })();
 
