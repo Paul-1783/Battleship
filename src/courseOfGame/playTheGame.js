@@ -24,7 +24,8 @@ export default async function playTheGame(player1, player2) {
     !player1.getPlayerGameBoard().isFleetSunk() ||
     !player2.getPlayerGameBoard().isFleetSunk()
   ) {
-    await playOneRound(player1, player2, ++i);
+    let buttonAlreadyPressed = await playOneRound(player1, player2, i);
+    if (buttonAlreadyPressed) ++i;
   }
 
   if (player1.getPlayerGameBoard().isFleetSunk())
@@ -38,7 +39,7 @@ export default async function playTheGame(player1, player2) {
 }
 
 async function playOneRound(player1, player2, i) {
-  if (i % 2 !== 0) {
+  if (i % 2 === 0) {
     gameFront.setInfoTable(`${player1.getPlayerName()}, take your shot.`);
     gameFront.disableBoard("player1");
     gameFront.enableBoard("player2");
@@ -49,8 +50,10 @@ async function playOneRound(player1, player2, i) {
   }
   let returnedIndex = await waitForButtonPressFunction();
   const coordinates = getCoordinates(returnedIndex);
-  console.log("coordinates ", coordinates);
-  if (i % 2 !== 0) {
+  if (i % 2 === 0) {
+    let status = player1.getPlayerGameBoard().getFieldStatus(coordinates);
+    if (status === "hit" || status === "miss") return false;
+
     player1.getPlayerGameBoard().receiveAttack(coordinates);
     gameFront.updatePlayerTable(
       "player1",
@@ -58,6 +61,9 @@ async function playOneRound(player1, player2, i) {
       player1.getPlayerGameBoard().getFieldStatus(coordinates)
     );
   } else {
+    let status = player2.getPlayerGameBoard().getFieldStatus(coordinates);
+    if (status === "hit" || status === "miss") return false;
+
     player2.getPlayerGameBoard().receiveAttack(coordinates);
     gameFront.updatePlayerTable(
       "player2",
@@ -65,6 +71,7 @@ async function playOneRound(player1, player2, i) {
       player2.getPlayerGameBoard().getFieldStatus(coordinates)
     );
   }
+  return true;
 }
 
 function getCoordinates(indexNumber) {

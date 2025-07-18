@@ -127,6 +127,7 @@ let gameFront = (function () {
   }
 
   function updatePlayerTable(playerName, index, status) {
+    console.log("update ", status);
     let board = null;
     if (playerName === "player1") {
       board = getBoardPlayer2();

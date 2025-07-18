@@ -25,7 +25,6 @@ let gameboard = () => {
       gameboardPositions[targetedCoordinates[0]][targetedCoordinates[1]]
         .fieldStatus === "occupied"
     ) {
-      console.log("occupied");
       gameboardPositions[targetedCoordinates[0]][
         targetedCoordinates[1]
       ].fieldStatus = "hit";
@@ -33,7 +32,6 @@ let gameboard = () => {
         gameboardPositions[targetedCoordinates[0]][targetedCoordinates[1]]
           .indexedInFleet;
       if (!fleet[fleetIndex].vessel.isSunk()) {
-        console.log("hit");
         fleet[fleetIndex].vessel.hit();
       } else {
         console.log("SUNK");
@@ -42,7 +40,6 @@ let gameboard = () => {
       gameboardPositions[targetedCoordinates[0]][targetedCoordinates[1]]
         .fieldStatus === "empty"
     ) {
-      console.log("empty");
       gameboardPositions[targetedCoordinates[0]][
         targetedCoordinates[1]
       ].fieldStatus = "miss";
