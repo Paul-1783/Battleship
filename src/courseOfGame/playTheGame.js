@@ -25,7 +25,6 @@ export default async function playTheGame(player1, player2) {
   }
 
   if (player1.getPlayerGameBoard().isFleetSunk()) {
-    console.log("IS SUNK!!! ", player1.getPlayerGameBoard().isFleetSunk());
     gameFront.setInfoTable(
       `${player2.getPlayerName()}, your're the winnner, congratulations.`
     );
@@ -49,9 +48,15 @@ async function playOneRound(player1, player2, i) {
   const coordinates = getCoordinates(returnedIndex);
   if (i % 2 === 0) {
     let status = player2.getPlayerGameBoard().getFieldStatus(coordinates);
-    if (status === "hit" || status === "miss") return false;
+    if (status === "hit" || status === "miss") {
+      gameFront.makeASnappyComment(
+        "Waste no ammunition, Admiral, you already shot at that area."
+      );
+      return false;
+    }
 
-    player2.getPlayerGameBoard().receiveAttack(coordinates);
+    let comment = player2.getPlayerGameBoard().receiveAttack(coordinates);
+    gameFront.makeASnappyComment(comment);
     gameFront.updatePlayerTable(
       "player2",
       returnedIndex,
@@ -59,9 +64,15 @@ async function playOneRound(player1, player2, i) {
     );
   } else {
     let status = player1.getPlayerGameBoard().getFieldStatus(coordinates);
-    if (status === "hit" || status === "miss") return false;
+    if (status === "hit" || status === "miss") {
+      gameFront.makeASnappyComment(
+        "Waste no ammunition, Admiral, you already shot at that area."
+      );
+      return false;
+    }
 
-    player1.getPlayerGameBoard().receiveAttack(coordinates);
+    let comment = player1.getPlayerGameBoard().receiveAttack(coordinates);
+    gameFront.makeASnappyComment(comment);
     gameFront.updatePlayerTable(
       "player1",
       returnedIndex,

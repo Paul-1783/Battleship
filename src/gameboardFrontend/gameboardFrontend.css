@@ -47,7 +47,8 @@ body {
     --system-ui: 'bodonitownregular', 'seasideresortnfregular';
 }
 
-.gameInfo {
+.gameInfo,
+.gameComments {
     background-color: #778da9;
     padding: 0.2rem 0.5rem;
     border-radius: 5px;
@@ -64,7 +65,7 @@ body {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
-    flex-wrap: 1;
+    flex-wrap: wrap;
 }
 
 .desk {

@@ -33,18 +33,18 @@ let gameboard = () => {
           .indexedInFleet;
       fleet[fleetIndex].vessel.hit();
       if (!fleet[fleetIndex].vessel.isSunk()) {
-        console.log("Hit ", fleet[fleetIndex].vessel.isSunk());
+        return "Devastating hit!";
       } else {
-        console.log("SUNK");
+        return "You sunk the sucker!";
       }
     } else if (
       gameboardPositions[targetedCoordinates[0]][targetedCoordinates[1]]
         .fieldStatus === "empty"
     ) {
-      console.log("empty");
       gameboardPositions[targetedCoordinates[0]][
         targetedCoordinates[1]
       ].fieldStatus = "miss";
+      return "You missed.";
     }
   }
 

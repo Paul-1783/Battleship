@@ -53,11 +53,18 @@ let gameFront = (function () {
   }
 
   function buildInfoTable(docking) {
+    const infoWrapper = document.createElement("div");
+    infoWrapper.classList.add("infoWrapper");
     const infoTable = document.createElement("h1");
     infoTable.classList.add("gameInfo");
     const storedData = retrieveStoredData().playerOneName;
     infoTable.innerText = `${storedData}, please position your first ship.`;
-    docking.insertAdjacentElement("afterbegin", infoTable);
+    infoWrapper.insertAdjacentElement("afterbegin", infoTable);
+    const commentator = document.createElement("h3");
+    commentator.classList.add("gameComments");
+    commentator.innerText = "It's on, Admiral.";
+    infoWrapper.insertAdjacentElement("beforeend", commentator);
+    docking.insertAdjacentElement("afterbegin", infoWrapper);
   }
 
   function createSingleBoard(boardName) {
@@ -143,6 +150,11 @@ let gameFront = (function () {
     });
   }
 
+  function makeASnappyComment(comment) {
+    let commentator = baseBodyRef.querySelector(".gameComments");
+    commentator.innerText = comment;
+  }
+
   return {
     buildInfoTable,
     buildGameBoard,
@@ -152,6 +164,7 @@ let gameFront = (function () {
     setInfoTable,
     disableBoard,
     enableBoard,
+    makeASnappyComment,
     updatePlayerTable,
   };
 })();

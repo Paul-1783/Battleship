@@ -22,7 +22,7 @@ export default function Ship(s) {
     return timesHit;
   }
   function isSunk() {
-    // console.log("timesHit: ", timesHit, " shipLength: ", shipLength);
+    console.log("timesHit: ", timesHit, " shipLength: ", shipLength);
     if (timesHit === shipLength) return true;
     return false;
   }
