@@ -10,29 +10,26 @@ export default async function playTheGame(player1, player2) {
     });
   }
 
-  let i = 0;
-  let clickedIndex = null;
-
   const listOfButtonNodesPlayer1 = gameFront.getBoardPlayer1().childNodes;
   const listOfButtonNodesPlayer2 = gameFront.getBoardPlayer2().childNodes;
 
   for (let button of listOfButtonNodesPlayer1) addButtonsToEventBus(button);
-
   for (let button of listOfButtonNodesPlayer2) addButtonsToEventBus(button);
-
+  let i = 0;
   while (
-    !player1.getPlayerGameBoard().isFleetSunk() ||
+    !player1.getPlayerGameBoard().isFleetSunk() &&
     !player2.getPlayerGameBoard().isFleetSunk()
   ) {
     let buttonAlreadyPressed = await playOneRound(player1, player2, i);
     if (buttonAlreadyPressed) ++i;
   }
 
-  if (player1.getPlayerGameBoard().isFleetSunk())
+  if (player1.getPlayerGameBoard().isFleetSunk()) {
+    console.log("IS SUNK!!! ", player1.getPlayerGameBoard().isFleetSunk());
     gameFront.setInfoTable(
       `${player2.getPlayerName()}, your're the winnner, congratulations.`
     );
-  else if (player2.getPlayerGameBoard().isFleetSunk())
+  } else if (player2.getPlayerGameBoard().isFleetSunk())
     gameFront.setInfoTable(
       `${player1.getPlayerName()}, your're the winnner, congratulations.`
     );
@@ -51,16 +48,6 @@ async function playOneRound(player1, player2, i) {
   let returnedIndex = await waitForButtonPressFunction();
   const coordinates = getCoordinates(returnedIndex);
   if (i % 2 === 0) {
-    let status = player1.getPlayerGameBoard().getFieldStatus(coordinates);
-    if (status === "hit" || status === "miss") return false;
-
-    player1.getPlayerGameBoard().receiveAttack(coordinates);
-    gameFront.updatePlayerTable(
-      "player1",
-      returnedIndex,
-      player1.getPlayerGameBoard().getFieldStatus(coordinates)
-    );
-  } else {
     let status = player2.getPlayerGameBoard().getFieldStatus(coordinates);
     if (status === "hit" || status === "miss") return false;
 
@@ -69,6 +56,16 @@ async function playOneRound(player1, player2, i) {
       "player2",
       returnedIndex,
       player2.getPlayerGameBoard().getFieldStatus(coordinates)
+    );
+  } else {
+    let status = player1.getPlayerGameBoard().getFieldStatus(coordinates);
+    if (status === "hit" || status === "miss") return false;
+
+    player1.getPlayerGameBoard().receiveAttack(coordinates);
+    gameFront.updatePlayerTable(
+      "player1",
+      returnedIndex,
+      player1.getPlayerGameBoard().getFieldStatus(coordinates)
     );
   }
   return true;

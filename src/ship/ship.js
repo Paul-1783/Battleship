@@ -3,7 +3,7 @@ export default function Ship(s) {
   let timesHit = 0;
   let shipClass = s;
 
-  function getShipLength(sClass) {
+  function getShipLength(s) {
     if (s === "carrier") {
       return 5;
     } else if (s === "battleship") {
@@ -22,6 +22,7 @@ export default function Ship(s) {
     return timesHit;
   }
   function isSunk() {
+    // console.log("timesHit: ", timesHit, " shipLength: ", shipLength);
     if (timesHit === shipLength) return true;
     return false;
   }

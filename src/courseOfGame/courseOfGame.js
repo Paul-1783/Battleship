@@ -7,7 +7,6 @@ let gameStart = (function () {
       player1.getPlayerGameBoard(),
       gameFront.getBoardPlayer1()
     );
-
     populate1Board(
       player2,
       player2.getPlayerGameBoard(),
@@ -29,7 +28,7 @@ function populate1Board(player, boardLogicPart, boardFrontPart) {
   );
   boardLogicPart.placeShip(
     [
-      [4, 4],
+      [5, 4],
       [8, 4],
     ],
     "battleship"

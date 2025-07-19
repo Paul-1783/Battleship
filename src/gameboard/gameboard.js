@@ -31,8 +31,9 @@ let gameboard = () => {
       let fleetIndex =
         gameboardPositions[targetedCoordinates[0]][targetedCoordinates[1]]
           .indexedInFleet;
+      fleet[fleetIndex].vessel.hit();
       if (!fleet[fleetIndex].vessel.isSunk()) {
-        fleet[fleetIndex].vessel.hit();
+        console.log("Hit ", fleet[fleetIndex].vessel.isSunk());
       } else {
         console.log("SUNK");
       }
@@ -40,6 +41,7 @@ let gameboard = () => {
       gameboardPositions[targetedCoordinates[0]][targetedCoordinates[1]]
         .fieldStatus === "empty"
     ) {
+      console.log("empty");
       gameboardPositions[targetedCoordinates[0]][
         targetedCoordinates[1]
       ].fieldStatus = "miss";
@@ -102,7 +104,7 @@ let gameboard = () => {
 
   function isFleetSunk() {
     let fleetStatus = true;
-    fleet.every((shipEntry) => {
+    fleet.forEach((shipEntry) => {
       if (!shipEntry.vessel.isSunk()) fleetStatus = false;
     });
     return fleetStatus;
