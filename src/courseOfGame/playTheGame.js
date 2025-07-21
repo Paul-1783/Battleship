@@ -35,22 +35,38 @@ export default async function playTheGame(player1, player2) {
 }
 
 async function playOneRound(player1, player2, i) {
+  let returnedIndex;
+
   if (i % 2 === 0) {
     gameFront.setInfoTable(`${player1.getPlayerName()}, take your shot.`);
     gameFront.disableBoard("player1");
     gameFront.enableBoard("player2");
+    if (player1.getTypeOfPlayer() === "real") {
+      returnedIndex = await waitForButtonPressFunction();
+    } else {
+      returnedIndex = await aiTakesAShot();
+    }
   } else {
     gameFront.setInfoTable(`${player2.getPlayerName()}, take your shot.`);
     gameFront.disableBoard("player2");
     gameFront.enableBoard("player1");
+    if (player2.getTypeOfPlayer() === "real") {
+      returnedIndex = await waitForButtonPressFunction();
+    } else {
+      returnedIndex = await aiTakesAShot();
+      console.log("ret ", returnedIndex);
+    }
   }
-  let returnedIndex = await waitForButtonPressFunction();
+  console.log("nachher ", returnedIndex);
+
   const coordinates = getCoordinates(returnedIndex);
+  console.log("coordinates ", coordinates);
+
   if (i % 2 === 0) {
     let status = player2.getPlayerGameBoard().getFieldStatus(coordinates);
     if (status === "hit" || status === "miss") {
       gameFront.makeASnappyComment(
-        "Waste no ammunition, Admiral, you already shot at that area."
+        "Waste no ammunition, Admiral, you already shot at that spot."
       );
       return false;
     }
@@ -72,6 +88,7 @@ async function playOneRound(player1, player2, i) {
     }
 
     let comment = player1.getPlayerGameBoard().receiveAttack(coordinates);
+    console.log("AI COMMENT ", comment, " ", returnedIndex);
     gameFront.makeASnappyComment(comment);
     gameFront.updatePlayerTable(
       "player1",
@@ -97,4 +114,9 @@ function waitForButtonPressFunction() {
   return new Promise((resolve) => {
     globalThis.clickedIt = resolve;
   });
+}
+
+async function aiTakesAShot() {
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  return Math.floor(Math.random() * 100).toString();
 }

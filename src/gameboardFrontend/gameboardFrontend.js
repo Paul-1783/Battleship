@@ -143,6 +143,7 @@ let gameFront = (function () {
 
     let buttons = board.querySelectorAll("button");
     buttons.forEach((currentButton) => {
+      console.log("DDDDDDDDDDDDDD ", index, " ", currentButton.classList[1]);
       if (currentButton.classList[1] === index) {
         currentButton.classList.remove(currentButton.classList[2]);
         currentButton.classList.add(status);
