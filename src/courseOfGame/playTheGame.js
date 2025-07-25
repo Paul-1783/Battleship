@@ -88,7 +88,6 @@ async function playOneRound(player1, player2, i) {
     }
 
     let comment = player1.getPlayerGameBoard().receiveAttack(coordinates);
-    console.log("AI COMMENT ", comment, " ", returnedIndex);
     gameFront.makeASnappyComment(comment);
     gameFront.updatePlayerTable(
       "player1",

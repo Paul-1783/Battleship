@@ -1,4 +1,5 @@
 import Ship from "../ship/ship.js";
+import someMath from "../someMath/math.js";
 
 let gameboard = () => {
   let getGameboard = () => {
@@ -53,6 +54,71 @@ let gameboard = () => {
       .fieldStatus;
   }
 
+  function checkForCoordinatesOccupied(coordinates) {
+    if (getFieldStatus([coordinates[0], coordinates[1]]) === "occupied")
+      return true;
+    return false;
+  }
+
+  function getNewCoordinateAttempt(shipLength) {
+    return [
+      Math.floor(Math.random() * (10 - shipLength)),
+      Math.floor(Math.random() * (10 - shipLength)),
+    ];
+  }
+
+  function findFreeCoordinates(shipLength) {
+    let horizontal = someMath.horizontal();
+    let [carrierRandomXCoordinate, carrierRandomYCoordinate] =
+      getNewCoordinateAttempt(shipLength);
+
+    let found = false;
+    while (!found) {
+      for (let i = 0; i <= shipLength; ++i) {
+        if (i === shipLength) {
+          found = true;
+          break;
+        }
+
+        if (horizontal) {
+          if (
+            checkForCoordinatesOccupied([
+              carrierRandomXCoordinate,
+              carrierRandomYCoordinate + i,
+            ])
+          ) {
+            [carrierRandomXCoordinate, carrierRandomYCoordinate] =
+              getNewCoordinateAttempt(shipLength);
+            break;
+          }
+        } else {
+          if (
+            checkForCoordinatesOccupied([
+              carrierRandomXCoordinate + i,
+              carrierRandomYCoordinate,
+            ])
+          ) {
+            [carrierRandomXCoordinate, carrierRandomYCoordinate] =
+              getNewCoordinateAttempt(shipLength);
+            break;
+          }
+        }
+      }
+    }
+
+    if (horizontal) {
+      return [
+        [carrierRandomXCoordinate, carrierRandomYCoordinate],
+        [carrierRandomXCoordinate, carrierRandomYCoordinate + shipLength - 1],
+      ];
+    } else {
+      return [
+        [carrierRandomXCoordinate, carrierRandomYCoordinate],
+        [carrierRandomXCoordinate + shipLength - 1, carrierRandomYCoordinate],
+      ];
+    }
+  }
+
   function placeShip(coordinates, typeOfShip) {
     if (!Array.isArray(coordinates) || !(coordinates.length === 2))
       return "format of coordinates can't be accepted";
@@ -92,6 +158,8 @@ let gameboard = () => {
         gameboardPositions[square[0]][square[1]].fieldStatus = "occupied";
         gameboardPositions[square[0]][square[1]].indexedInFleet =
           fleet.length - 1;
+      } else {
+        return `Indicated coordinates are already occupied by another ship.`;
       }
     });
 
@@ -125,6 +193,7 @@ let gameboard = () => {
     receiveAttack,
     isFleetSunk,
     getFieldStatus,
+    findFreeCoordinates,
   };
 };
 
