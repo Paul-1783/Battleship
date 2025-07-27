@@ -54,13 +54,10 @@ async function playOneRound(player1, player2, i) {
       returnedIndex = await waitForButtonPressFunction();
     } else {
       returnedIndex = await aiTakesAShot();
-      console.log("ret ", returnedIndex);
     }
   }
-  console.log("nachher ", returnedIndex);
 
   const coordinates = getCoordinates(returnedIndex);
-  console.log("coordinates ", coordinates);
 
   if (i % 2 === 0) {
     let status = player2.getPlayerGameBoard().getFieldStatus(coordinates);

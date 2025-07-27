@@ -62,8 +62,8 @@ let gameboard = () => {
 
   function getNewCoordinateAttempt(shipLength) {
     return [
-      Math.floor(Math.random() * (10 - shipLength)),
-      Math.floor(Math.random() * (10 - shipLength)),
+      Math.floor(Math.random() * (11 - shipLength)),
+      Math.floor(Math.random() * (11 - shipLength)),
     ];
   }
 
