@@ -1,94 +1,59 @@
 import gameFront from "../gameboardFrontend/gameboardFrontend";
+import randomizeIt from "../gameLogic/randomPopulateLogic";
 
 let gameStart = (function () {
   function initializeGame(player1, player2) {
-    populateBoardRandomly(
-      player1.getPlayerGameBoard(),
-      gameFront.getBoardPlayer1()
-    );
-    populateBoardRandomly(
-      player2.getPlayerGameBoard(),
-      gameFront.getBoardPlayer2()
-    );
+    randomizeIt.startListening(player1, gameFront.getRandomButtonPlayer1());
+    randomizeIt.startListening(player2, gameFront.getRandomButtonPlayer2());
+
+    let populate = (name) => {
+      gameFront.populateFleetDesk(name);
+    };
+    populate("fleetDeskOne");
+    populate("fleetDeskTwo");
+
+    activateAxisButton(player1, gameFront.getAxisButtonPlayer1());
+    activateAxisButton(player2, gameFront.getAxisButtonPlayer2());
+
+    activateResetButton(player1, gameFront.getResetButtonPlayer1());
+    activateResetButton(player2, gameFront.getResetButtonPlayer2());
+  }
+
+  function activateResetButton(player, buttonForReset) {
+    buttonForReset.addEventListener("click", () => {
+      player.getPlayerGameBoard().emptyGameBoard();
+      gameFront.emptyFleetDesk(player.getPlayerIndex());
+
+      if (player.getPlayerIndex() == "one") {
+        gameFront.setBoardFrontendToEmpty(gameFront.getBoardPlayer1());
+        gameFront.populateFleetDesk("fleetDeskOne");
+      } else {
+        gameFront.setBoardFrontendToEmpty(gameFront.getBoardPlayer2());
+        gameFront.populateFleetDesk("fleetDeskTwo");
+      }
+    });
+  }
+
+  function activateAxisButton(player, buttonToActivate) {
+    buttonToActivate.addEventListener("click", () => {
+      let desk = gameFront.getFleetDesk(player.getPlayerIndex());
+      let allSubDesks = desk.querySelectorAll(".desk>div");
+      let allShips = desk.querySelectorAll(".shipOnFleetDesk");
+      if (buttonToActivate.innerText == "x-axis") {
+        allSubDesks.forEach((subDesk) => subDesk.classList.add("xAxisForDesk"));
+        allShips.forEach((ship) => ship.classList.add("xAxis"));
+        buttonToActivate.innerText = "y-axis";
+      } else {
+        allSubDesks.forEach((subDesk) =>
+          subDesk.classList.remove("xAxisForDesk")
+        );
+        allShips.forEach((ship) => ship.classList.remove("xAxis"));
+        buttonToActivate.innerText = "x-axis";
+      }
+    });
   }
 
   return { initializeGame };
 })();
-
-function populateBoardRandomly(boardLogicPart, boardFrontPart) {
-  let carrierCoordinates = boardLogicPart.findFreeCoordinates(5);
-  boardLogicPart.placeShip(carrierCoordinates, "carrier");
-  let battleshipCoordinates = boardLogicPart.findFreeCoordinates(4);
-  boardLogicPart.placeShip(battleshipCoordinates, "battleship");
-  let cruiserCoordinates = boardLogicPart.findFreeCoordinates(3);
-  boardLogicPart.placeShip(cruiserCoordinates, "cruiser");
-  let submarineCoordinates = boardLogicPart.findFreeCoordinates(3);
-  boardLogicPart.placeShip(submarineCoordinates, "submarine");
-  let destroyerCoordinates = boardLogicPart.findFreeCoordinates(2);
-  boardLogicPart.placeShip(destroyerCoordinates, "destroyer");
-  populateBoardFrontend(boardLogicPart, boardFrontPart);
-}
-
-function populate1Board(boardLogicPart, boardFrontPart) {
-  //Player board logic
-  boardLogicPart.placeShip(
-    [
-      [0, 0],
-      [0, 4],
-    ],
-    "carrier"
-  );
-  boardLogicPart.placeShip(
-    [
-      [5, 4],
-      [8, 4],
-    ],
-    "battleship"
-  );
-  boardLogicPart.placeShip(
-    [
-      [2, 2],
-      [2, 4],
-    ],
-    "cruiser"
-  );
-  boardLogicPart.placeShip(
-    [
-      [9, 2],
-      [9, 4],
-    ],
-    "submarine"
-  );
-  boardLogicPart.placeShip(
-    [
-      [6, 9],
-      [7, 9],
-    ],
-    "destroyer"
-  );
-  populateBoardFrontend(boardLogicPart, boardFrontPart);
-}
-
-function populateBoardFrontend(boardLogicPart, boardFrontPart) {
-  //setup for board frontend
-  for (let d = 0; d < 10; ++d) {
-    for (let f = 0; f < 10; ++f) {
-      const index = d * 10 + f;
-      if (boardLogicPart.returnGameBoard()[d][f].fieldStatus === "occupied") {
-        gameFront.markField("occupied", index, boardFrontPart);
-      }
-      // else if (boardLogicPart.returnGameBoard()[d][f].fieldStatus === "hit") {
-      //   gameFront.markField("hit", index, boardFrontPart);
-      // } else if (
-      //   boardLogicPart.returnGameBoard()[d][f].fieldStatus === "miss"
-      // ) {
-      //   gameFront.markField("miss", index, boardFrontPart);
-      // }
-      else {
-        gameFront.markField("empty", index, boardFrontPart);
-      }
-    }
-  }
-}
 
 export default gameStart;

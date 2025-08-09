@@ -21,8 +21,8 @@ startButton.addEventListener("click", () => {
 
   gameFront.buildGameBoard(baseBody, start);
 
-  let player1 = Player(player1Type, player1Name);
-  let player2 = Player(player2Type, player2Name);
+  let player1 = Player(player1Type, player1Name, 1);
+  let player2 = Player(player2Type, player2Name, 2);
   gameStart.initializeGame(player1, player2);
-  playTheGame(player1, player2);
+  // playTheGame(player1, player2);
 });

@@ -1,36 +1,39 @@
 import Ship from "../ship/ship.js";
 import someMath from "../someMath/math.js";
 
-let gameboard = () => {
-  let getGameboard = () => {
-    let positionHelper = [];
+let gameBoard = () => {
+  let fleet = [];
+  let gameBoardPositions;
+  let getGameBoardPositions = function () {
+    gameBoardPositions = [];
     let i = 0;
     while (i < 10) {
-      positionHelper[i] = [];
+      gameBoardPositions[i] = [];
       for (let d = 0; d < 10; ++d) {
-        positionHelper[i][d] = {
+        gameBoardPositions[i][d] = {
           fieldStatus: "empty",
           indexedInFleet: -1,
         };
       }
       ++i;
     }
-    return positionHelper;
+    return gameBoardPositions;
   };
 
-  let gameboardPositions = getGameboard();
-  let fleet = [];
+  (() => {
+    getGameBoardPositions();
+  })();
 
   function receiveAttack(targetedCoordinates) {
     if (
-      gameboardPositions[targetedCoordinates[0]][targetedCoordinates[1]]
+      gameBoardPositions[targetedCoordinates[0]][targetedCoordinates[1]]
         .fieldStatus === "occupied"
     ) {
-      gameboardPositions[targetedCoordinates[0]][
+      gameBoardPositions[targetedCoordinates[0]][
         targetedCoordinates[1]
       ].fieldStatus = "hit";
       let fleetIndex =
-        gameboardPositions[targetedCoordinates[0]][targetedCoordinates[1]]
+        gameBoardPositions[targetedCoordinates[0]][targetedCoordinates[1]]
           .indexedInFleet;
       fleet[fleetIndex].vessel.hit();
       if (!fleet[fleetIndex].vessel.isSunk()) {
@@ -39,10 +42,10 @@ let gameboard = () => {
         return "You sunk the sucker!";
       }
     } else if (
-      gameboardPositions[targetedCoordinates[0]][targetedCoordinates[1]]
+      gameBoardPositions[targetedCoordinates[0]][targetedCoordinates[1]]
         .fieldStatus === "empty"
     ) {
-      gameboardPositions[targetedCoordinates[0]][
+      gameBoardPositions[targetedCoordinates[0]][
         targetedCoordinates[1]
       ].fieldStatus = "miss";
       return "You missed.";
@@ -50,7 +53,7 @@ let gameboard = () => {
   }
 
   function getFieldStatus(targetedCoordinates) {
-    return gameboardPositions[targetedCoordinates[0]][targetedCoordinates[1]]
+    return gameBoardPositions[targetedCoordinates[0]][targetedCoordinates[1]]
       .fieldStatus;
   }
 
@@ -154,9 +157,9 @@ let gameboard = () => {
     });
 
     shipCoordinates.forEach((square) => {
-      if (gameboardPositions[square[0]][square[1]].fieldStatus === "empty") {
-        gameboardPositions[square[0]][square[1]].fieldStatus = "occupied";
-        gameboardPositions[square[0]][square[1]].indexedInFleet =
+      if (gameBoardPositions[square[0]][square[1]].fieldStatus === "empty") {
+        gameBoardPositions[square[0]][square[1]].fieldStatus = "occupied";
+        gameBoardPositions[square[0]][square[1]].indexedInFleet =
           fleet.length - 1;
       } else {
         return `Indicated coordinates are already occupied by another ship.`;
@@ -183,7 +186,29 @@ let gameboard = () => {
   }
 
   function returnGameBoard() {
-    return gameboardPositions;
+    return gameBoardPositions;
+  }
+
+  function emptyGameBoard() {
+    fleet.splice(0, fleet.length);
+    fleet = [];
+    // gameBoardPositions.splice(0, gameBoardPositions.length);
+    // gameBoardPositions = getGameBoardPositions();
+    // let i = 0;
+    // while (i < 10) {
+    //   for (let d = 0; d < 10; ++d) {
+    //     console.log("lalal ", gameBoardPositions);
+    //   }
+    //   ++i;
+    // }
+    let i = 0;
+    while (i < 10) {
+      for (let d = 0; d < 10; ++d) {
+        gameBoardPositions[i][d].fieldStatus = "empty";
+        gameBoardPositions[i][d].indexedInFleet = -1;
+      }
+      ++i;
+    }
   }
 
   return {
@@ -194,7 +219,9 @@ let gameboard = () => {
     isFleetSunk,
     getFieldStatus,
     findFreeCoordinates,
+    getGameBoardPositions,
+    emptyGameBoard,
   };
 };
 
-export default gameboard;
+export default gameBoard;

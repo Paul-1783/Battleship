@@ -90,7 +90,8 @@ button::before {
 }
 
 button:hover {
-    color: white;
+    box-shadow: 0 0 23px var(--secondary-color);
+    border-radius: none;
 }
 
 button:hover::before,

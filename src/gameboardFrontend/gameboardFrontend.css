@@ -68,10 +68,58 @@ body {
     flex-wrap: wrap;
 }
 
+.deskWrapper {
+    max-width: 22rem;
+}
+
 .desk {
     background-color: aqua;
     min-width: 10rem;
     min-height: 30rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+}
+
+.deskUpperHalf,
+.deskLowerHalf {
+    flex-grow: 0.5;
+    height: 50%;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.xAxisForDesk {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.xAxis {
+    display: flex;
+}
+
+.board,
+.desk,
+h1,
+h3,
+p {
+    border: thick double var(--quaternary-color)
+}
+
+menu {
+    display: flex;
+    /* flex-direction: column;
+    gap: 1rem; */
+}
+
+.menuButton {
+    line-height: 0.9em;
+    min-width: 5rem;
+    min-height: 4rem;
+    margin-right: 2em;
+    padding: 10px
 }
 
 .board {
@@ -81,16 +129,21 @@ body {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
-    gap: 0.5rem;
+    gap: 0.1rem;
 }
 
-.fieldButton {
-    outline: 2px solid var(--quaternary-color);
-    max-width: 2.8rem;
+.fieldButton,
+.shipCompartment {
+    border: 3px solid var(--quaternary-color);
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0;
+    background-color: blue;
 }
 
 .fieldButton:hover {
-    box-shadow: 2px 4px 13px white;
+    box-shadow: 0 0 23px var(--secondary-color);
+    border-radius: none;
 }
 
 .occupied {
@@ -107,4 +160,17 @@ body {
 
 .empty {
     background-color: blue;
+}
+
+.shipCompartment {
+    background-color: black;
+}
+
+.shipOnFleetDesk:hover {
+    cursor: pointer;
+
+    .shipCompartment {
+        box-shadow: 4px -4px 4px white;
+    }
+
 }

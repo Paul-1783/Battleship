@@ -1,16 +1,23 @@
-import Gameboard from "../gameboard/gameboard";
+import gameBoard from "../gameboard/gameboard";
 
-let Player = (pt, pName) => {
-  let playerType = (pType) => {
+let Player = (pt, pName, playerNumber) => {
+  let getPlayerType = (pType) => {
     if (!pType) return "real";
     return "computer";
   };
 
+  let getPlayerNumber = (pn) => {
+    if (pn === 1) return "one";
+    return "two";
+  };
+
   let playerName = pName;
 
-  let adjacentBoard = Gameboard();
+  let adjacentBoard = gameBoard();
 
-  let typeOfPlayer = playerType(pt);
+  let typeOfPlayer = getPlayerType(pt);
+
+  let playerIndex = getPlayerNumber(playerNumber);
 
   function getPlayerGameBoard() {
     return adjacentBoard;
@@ -24,7 +31,11 @@ let Player = (pt, pName) => {
     return playerName;
   }
 
-  return { getPlayerGameBoard, getTypeOfPlayer, getPlayerName };
+  function getPlayerIndex() {
+    return playerIndex;
+  }
+
+  return { getPlayerGameBoard, getTypeOfPlayer, getPlayerName, getPlayerIndex };
 };
 
 export default Player;
