@@ -237,7 +237,6 @@ let gameFront = (function () {
       desk = getFleetDesk(index).querySelector(".deskUpperHalf");
     else desk = getFleetDesk(index).querySelector(".deskLowerHalf");
     let shipToRemove = desk.querySelector(`.${shipTitle}`);
-    console.log(" shit to remove ", shipToRemove.parentNode);
     desk.removeChild(shipToRemove);
   }
 
