@@ -139,9 +139,11 @@ menu {
     height: 3rem;
     border-radius: 0;
     background-color: blue;
+    user-select: none;
 }
 
-.fieldButton:hover {
+.fieldButton:hover,
+.shipCompartment:hover {
     box-shadow: 0 0 23px var(--secondary-color);
     border-radius: none;
 }
@@ -166,6 +168,13 @@ menu {
     background-color: black;
 }
 
+/* .shipOnFleetDesk {
+    min-width: 3rem;
+    min-height: 6rem;
+    max-height: 15rem;
+    max-width: 3rem;
+} */
+
 .shipOnFleetDesk:hover {
     cursor: pointer;
 
@@ -173,4 +182,8 @@ menu {
         box-shadow: 4px -4px 4px white;
     }
 
+}
+
+.dragging {
+    opacity: 0.3;
 }

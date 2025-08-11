@@ -134,13 +134,16 @@ let gameFront = (function () {
 
     let newShip = document.createElement("div");
     newShip.classList.add("shipOnFleetDesk");
-    if (axis) newShip.classList.add("yAxis");
-    else newShip.classList.add("xAxis");
+    newShip.setAttribute("draggable", true);
     newShip.classList.add(shipType);
 
+    if (axis) newShip.classList.add("yAxis");
+    else newShip.classList.add("xAxis");
+
     for (let i = 0; i < shipLength; ++i) {
-      let newCompartment = document.createElement("div"); // ACHTUNG KEIN BUTTON
+      let newCompartment = document.createElement("div");
       newCompartment.classList.add("shipCompartment");
+      newCompartment.classList.add(`${i.toString()}`);
       newShip.appendChild(newCompartment);
     }
 
@@ -215,14 +218,35 @@ let gameFront = (function () {
     return boardComplete.querySelector(".desk.fleetDeskTwo");
   }
 
+  function getSubDesks(desk) {
+    return desk.querySelectorAll(".desk>div");
+  }
+
   function emptyFleetDesk(index) {
-    let deskToEmpty = getFleetDesk(index);
-    let allSubDesks = deskToEmpty.querySelectorAll(".desk>div");
+    let allSubDesks = getSubDesks(getFleetDesk(index));
     allSubDesks.forEach((subDesk) => (subDesk.innerHTML = ""));
     allSubDesks[0].classList = "deskUpperHalf";
     allSubDesks[1].classList = "deskLowerHalf";
     if (index == "one") getAxisButtonPlayer1().innerText = "x-axis";
     else getAxisButtonPlayer2().innerText = "x-axis";
+  }
+
+  function removeShipFromFleetDesk(index, shipTitle, lengthCurrentShip) {
+    let desk = null;
+    if (lengthCurrentShip > 3)
+      desk = getFleetDesk(index).querySelector(".deskUpperHalf");
+    else desk = getFleetDesk(index).querySelector(".deskLowerHalf");
+    let shipToRemove = desk.querySelector(`.${shipTitle}`);
+    console.log(" shit to remove ", shipToRemove.parentNode);
+    desk.removeChild(shipToRemove);
+  }
+
+  function returnAllShipsFromFleetDesk(index) {
+    return getFleetDesk(index).querySelectorAll(".shipOnFleetDesk");
+  }
+
+  function returnShipCompartments(ship) {
+    return ship.querySelectorAll("div");
   }
 
   function populateFleetDesk(deskName) {
@@ -283,8 +307,33 @@ let gameFront = (function () {
     }
   }
 
+  function changeAxis(player, buttonToActivate) {
+    let desk = gameFront.getFleetDesk(player.getPlayerIndex());
+    let allSubDesks = desk.querySelectorAll(".desk>div");
+    let allShips = desk.querySelectorAll(".shipOnFleetDesk");
+    if (buttonToActivate.innerText == "x-axis") {
+      allSubDesks.forEach((subDesk) => subDesk.classList.add("xAxisForDesk"));
+      allShips.forEach((ship) => {
+        ship.classList.add("xAxis");
+        ship.classList.remove("yAxis");
+      });
+      buttonToActivate.innerText = "y-axis";
+    } else {
+      allSubDesks.forEach((subDesk) =>
+        subDesk.classList.remove("xAxisForDesk")
+      );
+      allShips.forEach((ship) => {
+        ship.classList.remove("xAxis");
+        ship.classList.add("yAxis");
+      });
+      buttonToActivate.innerText = "x-axis";
+    }
+  }
+
   return {
+    changeAxis,
     emptyFleetDesk,
+    removeShipFromFleetDesk,
     populateBoardFrontend,
     buildInfoTable,
     buildGameBoard,
@@ -306,6 +355,8 @@ let gameFront = (function () {
     getRandomButtonPlayer1,
     getRandomButtonPlayer2,
     populateFleetDesk,
+    returnAllShipsFromFleetDesk,
+    returnShipCompartments,
   };
 })();
 

@@ -34,5 +34,5 @@ export default function Ship(s) {
     return shipClass;
   }
 
-  return { hit, isSunk, getLength, getShipClass };
+  return { hit, isSunk, getLength, getShipClass, getShipLength };
 }
