@@ -192,15 +192,6 @@ let gameBoard = () => {
   function emptyGameBoard() {
     fleet.splice(0, fleet.length);
     fleet = [];
-    // gameBoardPositions.splice(0, gameBoardPositions.length);
-    // gameBoardPositions = getGameBoardPositions();
-    // let i = 0;
-    // while (i < 10) {
-    //   for (let d = 0; d < 10; ++d) {
-    //     console.log("lalal ", gameBoardPositions);
-    //   }
-    //   ++i;
-    // }
     let i = 0;
     while (i < 10) {
       for (let d = 0; d < 10; ++d) {

@@ -7,6 +7,7 @@ let gameStart = (function () {
   function initializeGame(player1, player2) {
     randomizeIt.startListening(player1, gameFront.getRandomButtonPlayer1());
     randomizeIt.startListening(player2, gameFront.getRandomButtonPlayer2());
+
     let populate = (name) => {
       gameFront.populateFleetDesk(name);
     };
@@ -88,7 +89,7 @@ let gameStart = (function () {
           if (startIndex < 0 || endIndex >= 99) return;
 
           stepWidth = 10;
-        } else {
+        } else if (draggedItem.classList[2] == "xAxis") {
           startIndex =
             parseInt(event.target.classList[1]) - parseInt(compartmentIndex);
           endIndex =

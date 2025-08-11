@@ -32,6 +32,7 @@ const randomizeIt = (function () {
     boardLogicPart.placeShip(destroyerCoordinates, "destroyer");
 
     gameFront.populateBoardFrontend(boardLogicPart, boardFrontPart);
+    gameFront.emptyFleetDesk(player.getPlayerIndex());
   }
 
   return { startListening };
