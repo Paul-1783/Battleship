@@ -43,9 +43,9 @@ let gameFront = (function () {
   function insertBoardTitle(title, container) {
     const boardTitle = document.createElement("p");
     if (title === "player1") {
-      boardTitle.innerText = "Board Player 1";
+      boardTitle.innerText = `${retrieveStoredData().playerOneName}'s Board`;
     } else {
-      boardTitle.innerText = "Board Player 2";
+      boardTitle.innerText = `${retrieveStoredData().playerTwoName}'s Board`;
     }
     boardTitle.classList.add("gameInfo");
     boardTitle.classList.add("playerHeader");
@@ -53,17 +53,28 @@ let gameFront = (function () {
   }
 
   function buildInfoTable(docking) {
+    const gameHeader = document.createElement("div");
+    gameHeader.classList.add("gameHeader");
+
     const infoWrapper = document.createElement("div");
     infoWrapper.classList.add("infoWrapper");
+
     const infoTable = document.createElement("h1");
     infoTable.classList.add("gameInfo");
     const storedData = retrieveStoredData().playerOneName;
     infoTable.innerText = `${storedData}, please position your first ship.`;
     infoWrapper.insertAdjacentElement("afterbegin", infoTable);
+
     const commentator = document.createElement("h3");
     commentator.classList.add("gameComments");
     commentator.innerText = "It's on, Admiral.";
     infoWrapper.insertAdjacentElement("beforeend", commentator);
+
+    const gameStart = document.createElement("button");
+    gameStart.classList.add("gameStart");
+    gameStart.innerText = "Start Game";
+    infoWrapper.insertAdjacentElement("beforeend", gameStart);
+
     docking.insertAdjacentElement("afterbegin", infoWrapper);
   }
 

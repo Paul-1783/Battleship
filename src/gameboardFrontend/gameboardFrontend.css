@@ -32,7 +32,7 @@ body {
     align-items: center;
     flex-direction: column;
     height: 100dvh;
-    font-family: bodonitownregular;
+    font-family: 'bodonitownregular';
     font-size: 1rem;
     font-weight: bold;
     background-image: url("../pictures/vertical_board.jpeg");
@@ -186,4 +186,13 @@ menu {
 
 .dragging {
     opacity: 0.3;
+}
+
+.gameStart {
+    text-align: center;
+}
+
+.gameHeader {
+    width: 100%;
+    background-color: bisque;
 }

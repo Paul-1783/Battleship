@@ -44,7 +44,7 @@ export default function startScreen() {
                         </p>
                      </fieldset>
                    <menu>
-                       <button class="submitDialog">Start Game</button>
+                       <button class="submitDialog">Place Ships on Gameboards</button>
                   </menu>
               </form>
             </dialog>

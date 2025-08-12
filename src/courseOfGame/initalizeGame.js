@@ -20,11 +20,12 @@ let gameStart = (function () {
     activateResetButton(player1, gameFront.getResetButtonPlayer1());
     activateResetButton(player2, gameFront.getResetButtonPlayer2());
 
-    activateShipDraggable("one", player1);
-    activateShipDraggable("two", player2);
+    activateShipDraggable(player1);
+    activateShipDraggable(player2);
   }
 
-  function activateShipDraggable(index, player) {
+  function activateShipDraggable(player) {
+    let index = player.getPlayerIndex();
     let listOfShips = gameFront.returnAllShipsFromFleetDesk(index);
     let draggedItem = null;
     let compartmentIndex = null;
@@ -34,19 +35,23 @@ let gameStart = (function () {
       compartments.forEach((compartment) => {
         compartment.addEventListener("mousedown", (event) => {
           compartmentIndex = event.target.classList[1];
+          console.log("compartmentIndex: ", compartmentIndex);
         });
       });
 
       ship.addEventListener(
         "dragstart",
         (event) => {
+          console.log("draggstart - event: ", event);
           draggedItem = ship;
+          console.log("draggstart: ", draggedItem);
           ship.classList.add("dragging");
         },
         true
       );
 
       ship.addEventListener("dragend", () => {
+        console.log("list in dragend: ", draggedItem.classList);
         draggedItem = null;
         compartmentIndex = null;
         ship.classList.remove("dragging");
@@ -77,7 +82,19 @@ let gameStart = (function () {
         let startIndex = null;
         let endIndex = null;
         let stepWidth = null;
-        let lengthCurrentShip = Ship().getShipLength(draggedItem.classList[1]);
+        let lengthCurrentShip = 0;
+
+        try {
+          console.log("list in drop: ", draggedItem);
+          lengthCurrentShip = Ship().getShipLength(draggedItem.classList[1]);
+        } catch (e) {
+          console.log(
+            `then "${e}" happened. `,
+            gameFront.returnAllShipsFromFleetDesk(index)
+          );
+          compartmentIndex = null;
+          return;
+        }
 
         if (draggedItem.classList[2] == "yAxis") {
           startIndex = event.target.classList[1] - compartmentIndex * 10;
@@ -90,13 +107,14 @@ let gameStart = (function () {
 
           stepWidth = 10;
         } else if (draggedItem.classList[2] == "xAxis") {
-          startIndex =
-            parseInt(event.target.classList[1]) - parseInt(compartmentIndex);
+          startIndex = parseInt(event.target.classList[1]) - compartmentIndex;
           endIndex =
             parseInt(event.target.classList[1]) +
             lengthCurrentShip -
             compartmentIndex -
             1;
+
+          console.log("start: ", startIndex, " endindex: ", endIndex);
 
           if (
             startIndex < 0 ||
@@ -139,6 +157,7 @@ let gameStart = (function () {
         gameFront.setBoardFrontendToEmpty(gameFront.getBoardPlayer2());
         gameFront.populateFleetDesk("fleetDeskTwo");
       }
+      activateShipDraggable(player);
     });
   }
 

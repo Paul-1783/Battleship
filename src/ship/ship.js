@@ -14,7 +14,7 @@ export default function Ship(s) {
       return 3;
     } else if (s === "destroyer") {
       return 2;
-    }
+    } else return 0;
   }
 
   function hit() {
