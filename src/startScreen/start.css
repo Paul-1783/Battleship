@@ -333,3 +333,8 @@ input[type="checkbox"]:hover {
 .secondaryLabel {
     display: inline;
 }
+
+form>h1 {
+    border: none;
+    color: var(--quaternary-color);
+}

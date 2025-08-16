@@ -2,23 +2,65 @@ import gameFront from "../gameboardFrontend/gameboardFrontend";
 import randomizeIt from "../gameLogic/randomPopulateLogic";
 import Ship from "../ship/ship";
 import getCoordinates from "../someMath/getCoordinates";
+import { playTheGame, playTheGameWithTwoHumans } from "./playTheGame";
 
 let gameStart = (function () {
-  function initializeGame(player1, player2) {
-    randomizeIt.startListening(player1, gameFront.getRandomButtonPlayer1());
-    randomizeIt.startListening(player2, gameFront.getRandomButtonPlayer2());
+  let populate = (name) => {
+    gameFront.populateFleetDesk(name);
+  };
 
-    let populate = (name) => {
-      gameFront.populateFleetDesk(name);
-    };
+  function initializeGameFor1Human(player, AiOpponent) {
+    randomizeIt.startListening(
+      player,
+      gameFront.getRandomButton(player.getPlayerIndex())
+    );
+
+    player.getPlayerIndex() == "one"
+      ? populate("fleetDeskOne")
+      : populate("fleetDeskTwo");
+
+    activateAxisButton(
+      player,
+      gameFront.getAxisButton(player.getPlayerIndex())
+    );
+    activateResetButton(
+      player,
+      gameFront.getResetButton(player.getPlayerIndex())
+    );
+    activateShipDraggable(player);
+    if (AiOpponent) randomizeIt.populateBoardRandomly(AiOpponent, false);
+  }
+
+  function initializeGameFor2AIs(player1, player2) {
+    randomizeIt.startListening(
+      player1,
+      gameFront.getRandomButton(player1.getPlayerIndex())
+    );
+    randomizeIt.startListening(
+      player2,
+      gameFront.getRandomButton(player2.getPlayerIndex())
+    );
+
     populate("fleetDeskOne");
     populate("fleetDeskTwo");
 
-    activateAxisButton(player1, gameFront.getAxisButtonPlayer1());
-    activateAxisButton(player2, gameFront.getAxisButtonPlayer2());
+    activateAxisButton(
+      player1,
+      gameFront.getAxisButton(player1.getPlayerIndex())
+    );
+    activateAxisButton(
+      player2,
+      gameFront.getAxisButton(player2.getPlayerIndex())
+    );
 
-    activateResetButton(player1, gameFront.getResetButtonPlayer1());
-    activateResetButton(player2, gameFront.getResetButtonPlayer2());
+    activateResetButton(
+      player1,
+      gameFront.getResetButton(player1.getPlayerIndex())
+    );
+    activateResetButton(
+      player2,
+      gameFront.getResetButton(player2.getPlayerIndex())
+    );
 
     activateShipDraggable(player1);
     activateShipDraggable(player2);
@@ -167,7 +209,51 @@ let gameStart = (function () {
     });
   }
 
-  return { initializeGame };
+  function activateStartButton(startButton, player1, player2, playerTypes) {
+    startButton.addEventListener("click", () => {
+      if (playerTypes == "twoAIs") {
+        gameFront.buildGameBoardInGame(
+          gameFront.getBaseBody(),
+          undefined,
+          false
+        );
+        gameFront.hideStartButton();
+        playTheGame(player1, player2);
+      } else if (playerTypes == "OneAI") {
+        gameFront.buildGameBoardInGame(
+          gameFront.getBaseBody(),
+          player1.isHuman() ? player1 : player2,
+          false
+        );
+        gameFront.hideStartButton();
+        playTheGame(player1, player2);
+      } else if (playerTypes == "TwoHumans") {
+        if (gameFront.getStartButton().innerText == "Place Ships of Player 2") {
+          gameFront.buildGameBoardInitFor1Human(
+            gameFront.getBaseBody(),
+            player2
+          );
+          initializeGameFor1Human(player2);
+          activateStartButton(
+            gameFront.getStartButton(),
+            player1,
+            player2,
+            "TwoHumans"
+          );
+        } else {
+          // gameFront.showIntermediaryDialog(player1, gameFront.getBaseBody());
+          gameFront.hideStartButton();
+          playTheGameWithTwoHumans(player1, player2);
+        }
+      }
+    });
+  }
+
+  return {
+    initializeGameFor2AIs,
+    initializeGameFor1Human,
+    activateStartButton,
+  };
 })();
 
 export default gameStart;

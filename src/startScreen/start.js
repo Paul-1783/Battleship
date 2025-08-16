@@ -13,7 +13,7 @@ export default function startScreen() {
                     <legend>Player 1</legend>
                       <p>
                         <label for="player1Name">Player one, please enter your name:</label>
-                        <input type="text" id="player1Name" autofocus value="Player 1" required>
+                        <input type="text" id="player1Name" autofocus value="1st Player" required>
                       </p>
                       <p>
                         <span class="toggle-checkbox-wrapper">
@@ -30,7 +30,7 @@ export default function startScreen() {
                         <legend>Player 2</legend>
                         <p>
                           <label for="player2Name">Player two, please enter your name:</label>
-                          <input type="text" id="player2Name" autofocus value="Player 2" required>
+                          <input type="text" id="player2Name" autofocus value="2nd Player" required>
                         </p>
                         <p>
                           <span class="toggle-checkbox-wrapper">
@@ -44,7 +44,7 @@ export default function startScreen() {
                         </p>
                      </fieldset>
                    <menu>
-                       <button class="submitDialog">Place Ships on Gameboards</button>
+                       <button class="submitDialog">Place Ships on Gameboard</button>
                   </menu>
               </form>
             </dialog>

@@ -3,41 +3,82 @@ import retrieveStoredData from "../allThingsStorageRelated/retrieveStoredData";
 import markField from "./markField";
 
 let gameFront = (function () {
-  const boardComplete = document.createElement("section");
-  let baseBodyRef = null;
+  function buildGameBoardInitFor2AIs(baseBody, start) {
+    const initSection2Ais = document.createElement("section");
+    initSection2Ais.classList.add("gameboardWrapper");
 
-  function buildGameBoard(baseBody, start) {
-    boardComplete.classList.add("gameboardWrapper");
+    addFleetDeskToBoard(initSection2Ais, "fleetDeskTwo");
 
-    boardComplete.insertAdjacentElement(
-      "afterbegin",
-      createFleetDesk("fleetDeskTwo")
+    createBoardContainer(initSection2Ais, "boardPlayerTwo", "player2");
+    createBoardContainer(initSection2Ais, "boardPlayerOne", "player1");
+
+    addFleetDeskToBoard(initSection2Ais, "fleetDeskOne");
+
+    baseBody.replaceChild(initSection2Ais, start);
+    buildInfoTable(baseBody, null);
+  }
+
+  function buildGameBoardInitFor1Human(baseBody, player) {
+    const initSection = document.createElement("section");
+    initSection.classList.add("gameboardWrapper");
+
+    player.getPlayerIndex() == "one"
+      ? createBoardContainer(initSection, "boardPlayerOne", "player1")
+      : createBoardContainer(initSection, "boardPlayerTwo", "player2");
+
+    addFleetDeskToBoard(
+      initSection,
+      player.getPlayerIndex() == "one" ? "fleetDeskOne" : "fleetDeskTwo"
     );
 
-    const containerTwo = document.createElement("div");
-    containerTwo.insertAdjacentElement(
-      "afterbegin",
-      createSingleBoard("boardPlayerTwo")
-    );
-    insertBoardTitle("player2", containerTwo);
-    boardComplete.insertAdjacentElement("afterbegin", containerTwo);
+    emptyBaseBody(baseBody);
 
-    const containerOne = document.createElement("div");
-    containerOne.insertAdjacentElement(
-      "afterbegin",
-      createSingleBoard("boardPlayerOne")
-    );
-    insertBoardTitle("player1", containerOne);
-    boardComplete.insertAdjacentElement("afterbegin", containerOne);
+    baseBody.insertAdjacentElement("afterbegin", initSection);
+    buildInfoTable(baseBody, player);
+  }
 
-    boardComplete.insertAdjacentElement(
-      "afterbegin",
-      createFleetDesk("fleetDeskOne")
-    );
+  function buildGameBoardInGame(baseBody, player, oppositionGameBoardExists) {
+    const initSection = document.createElement("section");
+    initSection.classList.add("gameboardWrapper");
+    createBoardContainer(initSection, "boardPlayerTwo", "player2");
+    createBoardContainer(initSection, "boardPlayerOne", "player1");
 
-    baseBody.replaceChild(boardComplete, start);
-    buildInfoTable(baseBody);
-    baseBodyRef = baseBody;
+    emptyBaseBody(baseBody);
+
+    baseBody.insertAdjacentElement("afterbegin", initSection);
+    buildInfoTable(baseBody, player);
+
+    if (player)
+      populateBoardFrontend(
+        player.getPlayerGameBoard(),
+        player.getPlayerIndex() == "one"
+          ? gameFront.getBoardPlayer1()
+          : gameFront.getBoardPlayer2()
+      );
+
+    if (oppositionGameBoardExists) {
+      populateBoardFrontend(
+        player.getOppositionGameBoard(),
+        player.getPlayerIndex() == "one"
+          ? gameFront.getBoardPlayer2()
+          : gameFront.getBoardPlayer1()
+      );
+    }
+  }
+
+  function emptyBaseBody(baseBody) {
+    baseBody.innerHTML = "";
+  }
+
+  function createBoardContainer(gameSection, name, title) {
+    const container = document.createElement("div");
+    container.insertAdjacentElement("afterbegin", createSingleBoard(name));
+    insertBoardTitle(title, container);
+    gameSection.insertAdjacentElement("afterbegin", container);
+  }
+
+  function addFleetDeskToBoard(gameSection, name) {
+    gameSection.insertAdjacentElement("afterbegin", createFleetDesk(name));
   }
 
   function insertBoardTitle(title, container) {
@@ -52,7 +93,7 @@ let gameFront = (function () {
     container.insertAdjacentElement("afterbegin", boardTitle);
   }
 
-  function buildInfoTable(docking) {
+  function buildInfoTable(docking, player) {
     const gameHeader = document.createElement("div");
     gameHeader.classList.add("gameHeader");
 
@@ -61,8 +102,9 @@ let gameFront = (function () {
 
     const infoTable = document.createElement("h1");
     infoTable.classList.add("gameInfo");
-    const storedData = retrieveStoredData().playerOneName;
-    infoTable.innerText = `${storedData}, please position your first ship.`;
+    infoTable.innerText = `${
+      player == null ? "players" : player.getPlayerName()
+    }, please position your ships.`;
     infoWrapper.insertAdjacentElement("afterbegin", infoTable);
 
     const commentator = document.createElement("h3");
@@ -70,12 +112,26 @@ let gameFront = (function () {
     commentator.innerText = "It's on, Admiral.";
     infoWrapper.insertAdjacentElement("beforeend", commentator);
 
+    const infoNeighborLeft = document.createElement("div");
+    infoNeighborLeft.classList.add("infoNeighbor");
+    infoNeighborLeft.classList.add("infoNeighborLeft");
+    const infoNeighborRight = document.createElement("div");
+    infoNeighborRight.classList.add("infoNeighbor");
+    infoNeighborRight.classList.add("infoNeighborRight");
+
     const gameStart = document.createElement("button");
     gameStart.classList.add("gameStart");
     gameStart.innerText = "Start Game";
-    infoWrapper.insertAdjacentElement("beforeend", gameStart);
+    infoNeighborRight.insertAdjacentElement("beforeend", gameStart);
 
-    docking.insertAdjacentElement("afterbegin", infoWrapper);
+    const infoComplete = document.createElement("div");
+    infoComplete.classList.add("infoComplete");
+
+    infoComplete.insertAdjacentElement("beforeend", infoNeighborLeft);
+    infoComplete.insertAdjacentElement("beforeend", infoWrapper);
+    infoComplete.insertAdjacentElement("beforeend", infoNeighborRight);
+
+    docking.insertAdjacentElement("afterbegin", infoComplete);
   }
 
   function createSingleBoard(boardName) {
@@ -119,7 +175,7 @@ let gameFront = (function () {
     randomButton.classList.add("menuButton");
     randomButton.classList.add("randomButton");
     randomButton.classList.add(`${deskName}`);
-    randomButton.innerText = "Random Initialize";
+    randomButton.innerText = "Auto-Place";
 
     const axisButton = document.createElement("button");
     axisButton.classList.add("menuButton");
@@ -142,7 +198,6 @@ let gameFront = (function () {
 
   function addShipToFleetDesk(deskName, shipType, shipLength, axis) {
     let fleetDesk = document.querySelector(deskName);
-
     let newShip = document.createElement("div");
     newShip.classList.add("shipOnFleetDesk");
     newShip.setAttribute("draggable", true);
@@ -191,46 +246,66 @@ let gameFront = (function () {
     }
   }
 
+  function showIntermediaryDialog(player, baseBody) {
+    const newBoard = document.createElement("dialog");
+    newBoard.classList.add("nextMove");
+    newBoard.insertAdjacentHTML(
+      "afterbegin",
+      `<form action="" method="dialog" id="nextMove">
+            <p>
+              You turn, Admiral ${player.getPlayerName()} . 
+             </p>
+            <menu>
+                 <button class="submitDialog">Continue to Game Board Screen</button>
+            </menu>
+        </form>`
+    );
+    emptyBaseBody(baseBody);
+    baseBody.appendChild(newBoard);
+    baseBody.querySelector(".nextMove").showModal();
+  }
+
   function getBoardPlayer1() {
-    return boardComplete.querySelector(".boardPlayerOne");
+    return document.querySelector(".boardPlayerOne");
   }
 
   function getBoardPlayer2() {
-    return boardComplete.querySelector(".boardPlayerTwo");
+    return document.querySelector(".boardPlayerTwo");
   }
 
-  function getRandomButtonPlayer1() {
-    return boardComplete.querySelector(".randomButton.fleetDeskOne");
+  function getRandomButton(index) {
+    return index == "one"
+      ? document.querySelector(".randomButton.fleetDeskOne")
+      : document.querySelector(".randomButton.fleetDeskTwo");
   }
 
-  function getRandomButtonPlayer2() {
-    return boardComplete.querySelector(".randomButton.fleetDeskTwo");
+  function getAxisButton(index) {
+    return index == "one"
+      ? document.querySelector(".axisButton.fleetDeskOne")
+      : document.querySelector(".axisButton.fleetDeskTwo");
   }
 
-  function getAxisButtonPlayer1() {
-    return boardComplete.querySelector(".axisButton.fleetDeskOne");
+  function getResetButton(index) {
+    return index == "one"
+      ? document.querySelector(".resetButton.fleetDeskOne")
+      : document.querySelector(".resetButton.fleetDeskTwo");
   }
 
-  function getAxisButtonPlayer2() {
-    return boardComplete.querySelector(".axisButton.fleetDeskTwo");
-  }
-
-  function getResetButtonPlayer1() {
-    return boardComplete.querySelector(".resetButton.fleetDeskOne");
-  }
-
-  function getResetButtonPlayer2() {
-    return boardComplete.querySelector(".resetButton.fleetDeskTwo");
+  function getStartButton() {
+    return document.querySelector(".gameStart");
   }
 
   function getFleetDesk(index) {
-    if (index == "one")
-      return boardComplete.querySelector(".desk.fleetDeskOne");
-    return boardComplete.querySelector(".desk.fleetDeskTwo");
+    if (index == "one") return document.querySelector(".desk.fleetDeskOne");
+    return document.querySelector(".desk.fleetDeskTwo");
   }
 
   function getSubDesks(desk) {
     return desk.querySelectorAll(".desk>div");
+  }
+
+  function getBaseBody() {
+    return document.querySelector(".baseBody");
   }
 
   function emptyFleetDesk(index) {
@@ -238,8 +313,8 @@ let gameFront = (function () {
     allSubDesks.forEach((subDesk) => (subDesk.innerHTML = ""));
     allSubDesks[0].classList = "deskUpperHalf";
     allSubDesks[1].classList = "deskLowerHalf";
-    if (index == "one") getAxisButtonPlayer1().innerText = "x-axis";
-    else getAxisButtonPlayer2().innerText = "x-axis";
+    if (index == "one") getAxisButton(index).innerText = "x-axis";
+    else getAxisButton(index).innerText = "x-axis";
   }
 
   function removeShipFromFleetDesk(index, shipTitle, lengthCurrentShip) {
@@ -268,17 +343,13 @@ let gameFront = (function () {
   }
 
   function setInfoTable(info) {
-    let gameInfoHeader = baseBodyRef.querySelector(".gameInfo");
+    let gameInfoHeader = document.querySelector(".gameInfo"); ///////////////////
     gameInfoHeader.innerText = info;
   }
 
   function updatePlayerTable(playerName, index, status) {
-    let board = null;
-    if (playerName === "player1") {
-      board = getBoardPlayer1();
-    } else if (playerName === "player2") {
-      board = getBoardPlayer2();
-    }
+    let board =
+      playerName === "player1" ? getBoardPlayer1() : getBoardPlayer2();
 
     let buttons = board.querySelectorAll("button");
     buttons.forEach((currentButton) => {
@@ -290,17 +361,32 @@ let gameFront = (function () {
   }
 
   function makeASnappyComment(comment) {
-    let commentator = baseBodyRef.querySelector(".gameComments");
+    let commentator = document.querySelector(".gameComments"); ///////////////////
     commentator.innerText = comment;
   }
 
+  function changeStartButton() {
+    if (getStartButton().innerText == "Start Game") {
+      this.getStartButton().innerText = "Place Ships of Player 2";
+    } else {
+      this.getStartButton().innerText = "Start Game";
+    }
+  }
+
   function populateBoardFrontend(boardLogicPart, boardFrontPart) {
-    //setup for board frontend
     for (let d = 0; d < 10; ++d) {
       for (let f = 0; f < 10; ++f) {
         const index = d * 10 + f;
         if (boardLogicPart.returnGameBoard()[d][f].fieldStatus === "occupied") {
           markField("occupied", index, boardFrontPart);
+        } else if (
+          boardLogicPart.returnGameBoard()[d][f].fieldStatus === "miss"
+        ) {
+          markField("miss", index, boardFrontPart);
+        } else if (
+          boardLogicPart.returnGameBoard()[d][f].fieldStatus === "hit"
+        ) {
+          markField("hit", index, boardFrontPart);
         } else {
           markField("empty", index, boardFrontPart);
         }
@@ -340,33 +426,41 @@ let gameFront = (function () {
     }
   }
 
+  function hideStartButton() {
+    getStartButton().style.display = "none";
+  }
+
   return {
-    changeAxis,
-    emptyFleetDesk,
-    removeShipFromFleetDesk,
-    populateBoardFrontend,
     buildInfoTable,
-    buildGameBoard,
-    getBoardPlayer1,
-    getBoardPlayer2,
-    markField,
-    setInfoTable,
+    buildGameBoardInitFor2AIs,
+    buildGameBoardInGame,
+    buildGameBoardInitFor1Human,
+    changeAxis,
+    changeStartButton,
     disableBoard,
     enableBoard,
-    makeASnappyComment,
-    updatePlayerTable,
+    emptyFleetDesk,
     addShipToFleetDesk,
     setBoardFrontendToEmpty,
     getFleetDesk,
-    getAxisButtonPlayer1,
-    getAxisButtonPlayer2,
-    getResetButtonPlayer1,
-    getResetButtonPlayer2,
-    getRandomButtonPlayer1,
-    getRandomButtonPlayer2,
+    getAxisButton,
+    getBaseBody,
+    getBoardPlayer1,
+    getBoardPlayer2,
+    getResetButton,
+    getRandomButton,
+    getStartButton,
+    hideStartButton,
+    markField,
+    makeASnappyComment,
     populateFleetDesk,
+    populateBoardFrontend,
+    removeShipFromFleetDesk,
     returnAllShipsFromFleetDesk,
     returnShipCompartments,
+    showIntermediaryDialog,
+    setInfoTable,
+    updatePlayerTable,
   };
 })();
 

@@ -202,6 +202,13 @@ let gameBoard = () => {
     }
   }
 
+  function updateOppositionBoard(comment, coordinates) {
+    if (comment == "occupied")
+      gameBoardPositions[coordinates[0]][coordinates[1]].fieldStatus = "hit";
+    else
+      gameBoardPositions[coordinates[0]][coordinates[1]].fieldStatus = "miss";
+  }
+
   return {
     placeShip,
     returnFleet,
@@ -212,6 +219,7 @@ let gameBoard = () => {
     findFreeCoordinates,
     getGameBoardPositions,
     emptyGameBoard,
+    updateOppositionBoard,
   };
 };
 
