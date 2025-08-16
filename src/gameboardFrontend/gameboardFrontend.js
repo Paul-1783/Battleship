@@ -112,12 +112,8 @@ let gameFront = (function () {
     commentator.innerText = "It's on, Admiral.";
     infoWrapper.insertAdjacentElement("beforeend", commentator);
 
-    const infoNeighborLeft = document.createElement("div");
-    infoNeighborLeft.classList.add("infoNeighbor");
-    infoNeighborLeft.classList.add("infoNeighborLeft");
-    const infoNeighborRight = document.createElement("div");
-    infoNeighborRight.classList.add("infoNeighbor");
-    infoNeighborRight.classList.add("infoNeighborRight");
+    const infoNeighborLeft = createNeighbor("infoNeighborLeft");
+    const infoNeighborRight = createNeighbor("infoNeighborRight");
 
     const gameStart = document.createElement("button");
     gameStart.classList.add("gameStart");
@@ -132,6 +128,13 @@ let gameFront = (function () {
     infoComplete.insertAdjacentElement("beforeend", infoNeighborRight);
 
     docking.insertAdjacentElement("afterbegin", infoComplete);
+  }
+
+  function createNeighbor(neighborName) {
+    const neighbor = document.createElement("div");
+    neighbor.classList.add("infoNeighbor");
+    neighbor.classList.add(neighborName);
+    return neighbor;
   }
 
   function createSingleBoard(boardName) {
@@ -171,29 +174,38 @@ let gameFront = (function () {
     deskWrapper.appendChild(desk);
     const buttonPanel = document.createElement("menu");
 
-    const randomButton = document.createElement("button");
-    randomButton.classList.add("menuButton");
-    randomButton.classList.add("randomButton");
-    randomButton.classList.add(`${deskName}`);
-    randomButton.innerText = "Auto-Place";
+    const randomButton = createFleetDeskButton(
+      "randomButton",
+      `${deskName}`,
+      "Auto-Place"
+    );
 
-    const axisButton = document.createElement("button");
-    axisButton.classList.add("menuButton");
-    axisButton.classList.add("axisButton");
-    axisButton.classList.add(`${deskName}`);
-    axisButton.innerText = "x-axis";
+    const axisButton = createFleetDeskButton(
+      "axisButton",
+      `${deskName}`,
+      "x-axis"
+    );
 
-    const resetButton = document.createElement("button");
-    resetButton.classList.add("menuButton");
-    resetButton.classList.add("resetButton");
-    resetButton.classList.add(`${deskName}`);
-    resetButton.innerText = "Reset";
+    const resetButton = createFleetDeskButton(
+      "resetButton",
+      `${deskName}`,
+      "Reset"
+    );
 
     buttonPanel.appendChild(randomButton);
     buttonPanel.appendChild(resetButton);
     buttonPanel.appendChild(axisButton);
     deskWrapper.appendChild(buttonPanel);
     return deskWrapper;
+  }
+
+  function createFleetDeskButton(buttonType, deskName, inText) {
+    const newButton = document.createElement("button");
+    newButton.classList.add("menuButton");
+    newButton.classList.add(buttonType);
+    newButton.classList.add(`${deskName}`);
+    newButton.innerText = inText;
+    return newButton;
   }
 
   function addShipToFleetDesk(deskName, shipType, shipLength, axis) {
@@ -263,6 +275,7 @@ let gameFront = (function () {
     emptyBaseBody(baseBody);
     baseBody.appendChild(newBoard);
     baseBody.querySelector(".nextMove").showModal();
+    return document.querySelector(".submitDialog");
   }
 
   function getBoardPlayer1() {

@@ -151,6 +151,16 @@ async function playTheGameWithTwoHumans(player1, player2) {
       player2,
       i
     );
+
+    addIntermissionButtonToEventBus(
+      gameFront.showIntermediaryDialog(
+        i % 2 == 0 ? player1 : player2,
+        gameFront.getBaseBody()
+      )
+    );
+
+    await waitForPlayerToBeReadyForNextMove();
+
     if (buttonAlreadyPressed) ++i;
   }
 
