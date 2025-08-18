@@ -203,19 +203,21 @@ async function playOneRoundWithTwoHumans(player1, player2, i) {
     }
   }
 
+  console.log(
+    i % 2 === 0
+      ? `${player1.getPlayerName()} returnedINdex:`
+      : `${player2.getPlayerName()} returnedIndex: `,
+    returnedIndex
+  );
+
   const coordinates = getCoordinates(returnedIndex);
+
+  console.log(" coordinates: ", coordinates);
 
   // Turn Player 1
   if (i % 2 === 0) {
     let status = player2.getPlayerGameBoard().getFieldStatus(coordinates);
     if (status === "hit" || status === "miss") {
-      gameFront.makeASnappyComment(
-        "Waste no ammunition, Admiral, you already shot at that spot."
-      );
-      let commentator = document.querySelector(".gameComments");
-      gameFront.setInfoTable(
-        "Waste no ammunition, Admiral, you already shot at that spot."
-      );
       return false;
     } else gameFront.makeASnappyComment("encourage");
 
@@ -248,8 +250,10 @@ async function playOneRoundWithTwoHumans(player1, player2, i) {
     } else gameFront.makeASnappyComment("encourage");
 
     let comment = player1.getPlayerGameBoard().receiveAttack(coordinates);
-    gameFront.makeASnappyComment(comment);
-    setTimeout(() => {}, 2000);
+    console.log("player 2 comment ", comment);
+    setTimeout(() => {
+      gameFront.makeASnappyComment(comment);
+    }, 2000);
     if (!(player1.isHuman() === true && player2.isHuman() == true)) {
       gameFront.updatePlayerTable(
         "player1",

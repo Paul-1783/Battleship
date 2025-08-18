@@ -211,7 +211,10 @@ let gameStart = (function () {
 
   function activateStartButton(startButton, player1, player2, playerTypes) {
     startButton.addEventListener("click", () => {
-      if (playerTypes == "twoAIs") {
+      if (
+        playerTypes == "twoAIs" &&
+        gameFront.checkFleetsReady(player1, player2)
+      ) {
         gameFront.buildGameBoardInGame(
           gameFront.getBaseBody(),
           undefined,
@@ -219,7 +222,10 @@ let gameStart = (function () {
         );
         gameFront.hideStartButton();
         playTheGame(player1, player2);
-      } else if (playerTypes == "OneAI") {
+      } else if (
+        playerTypes == "OneAI" &&
+        gameFront.checkFleetsReady(player1.isHuman() ? player1 : player2)
+      ) {
         gameFront.buildGameBoardInGame(
           gameFront.getBaseBody(),
           player1.isHuman() ? player1 : player2,
@@ -229,6 +235,7 @@ let gameStart = (function () {
         playTheGame(player1, player2);
       } else if (playerTypes == "TwoHumans") {
         if (gameFront.getStartButton().innerText == "Place Ships of Player 2") {
+          if (!gameFront.checkFleetsReady(player1)) return;
           gameFront.buildGameBoardInitFor1Human(
             gameFront.getBaseBody(),
             player2
@@ -240,8 +247,8 @@ let gameStart = (function () {
             player2,
             "TwoHumans"
           );
-        } else {
-          // gameFront.showIntermediaryDialog(player1, gameFront.getBaseBody());
+        } else if (gameFront.checkFleetsReady(player2)) {
+          console.log("in");
           gameFront.hideStartButton();
           playTheGameWithTwoHumans(player1, player2);
         }

@@ -109,7 +109,6 @@ let gameFront = (function () {
 
     const commentator = document.createElement("h3");
     commentator.classList.add("gameComments");
-    commentator.innerText = "It's on, Admiral.";
     infoWrapper.insertAdjacentElement("beforeend", commentator);
 
     const infoNeighborLeft = createNeighbor("infoNeighborLeft");
@@ -258,6 +257,39 @@ let gameFront = (function () {
     }
   }
 
+  function checkFleetsReady(...players) {
+    for (let player of players) {
+      if (returnAllShipsFromFleetDesk(player.getPlayerIndex()).length > 0) {
+        gameFront.showHintDialog(player, gameFront.getBaseBody());
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function showHintDialog(player, baseBody) {
+    let newBoard = document.createElement("dialog");
+    newBoard.setAttribute("method", "dialog");
+    newBoard.classList.add("shipsMissing");
+    newBoard.insertAdjacentHTML(
+      "beforeend",
+      `<form action="" method="dialog" id="shipsMissing">
+            <p>
+              ${player.getPlayerName()}, you haven't positioned all your ships yet. 
+             </p>
+            <menu>
+                 <button type="close" class="close">Close</button>
+            </menu>
+        </form>`
+    );
+    baseBody.appendChild(newBoard);
+    baseBody.querySelector(".shipsMissing").showModal();
+
+    document.querySelector(".close").addEventListener("click", () => {
+      document.querySelector(".shipsMissing").remove();
+    });
+  }
+
   function showIntermediaryDialog(player, baseBody) {
     const newBoard = document.createElement("dialog");
     newBoard.classList.add("nextMove");
@@ -374,7 +406,6 @@ let gameFront = (function () {
   }
 
   function makeASnappyComment(comment) {
-    console.log("comment ", comment);
     let commentator = document.querySelector(".gameComments");
 
     if (comment == "encourage") {
@@ -385,9 +416,13 @@ let gameFront = (function () {
         ? (comment = `All guns blazing!`)
         : (comment = `Another round of this dreadful game, drown me.`);
     }
-
+    console.log(
+      " commentator inner text ",
+      commentator,
+      "  comment: ",
+      comment
+    );
     commentator.innerText = comment;
-    console.log("comment after commentator ", commentator);
   }
 
   function changeStartButton() {
@@ -456,16 +491,17 @@ let gameFront = (function () {
   }
 
   return {
+    addShipToFleetDesk,
     buildInfoTable,
     buildGameBoardInitFor2AIs,
     buildGameBoardInGame,
     buildGameBoardInitFor1Human,
     changeAxis,
     changeStartButton,
+    checkFleetsReady,
     disableBoard,
     enableBoard,
     emptyFleetDesk,
-    addShipToFleetDesk,
     setBoardFrontendToEmpty,
     getFleetDesk,
     getAxisButton,
@@ -486,6 +522,7 @@ let gameFront = (function () {
     showIntermediaryDialog,
     setInfoTable,
     updatePlayerTable,
+    showHintDialog,
   };
 })();
 
