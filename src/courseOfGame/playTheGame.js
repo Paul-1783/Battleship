@@ -75,7 +75,7 @@ async function playOneRound(player1, player2, i) {
     }
 
     let comment = player2.getPlayerGameBoard().receiveAttack(coordinates);
-    gameFront.makeASnappyComment(comment);
+    setTimeout(gameFront.makeASnappyComment(comment), 2000);
     if (!(player1.isHuman() === true && player2.isHuman() == true)) {
       gameFront.updatePlayerTable(
         "player2",
@@ -103,6 +103,8 @@ async function playOneRound(player1, player2, i) {
         player1.getPlayerGameBoard().getFieldStatus(coordinates)
       );
     }
+
+    setTimeout(gameFront.makeASnappyComment("encourage"), 2000);
   }
   return true;
 }
@@ -154,12 +156,12 @@ async function playTheGameWithTwoHumans(player1, player2) {
 
     addIntermissionButtonToEventBus(
       gameFront.showIntermediaryDialog(
-        i % 2 == 0 ? player1 : player2,
+        i % 2 == 0 ? player2 : player1,
         gameFront.getBaseBody()
       )
     );
 
-    await waitForPlayerToBeReadyForNextMove();
+    if (buttonAlreadyPressed) await waitForPlayerToBeReadyForNextMove();
 
     if (buttonAlreadyPressed) ++i;
   }
@@ -175,8 +177,9 @@ async function playTheGameWithTwoHumans(player1, player2) {
 }
 
 async function playOneRoundWithTwoHumans(player1, player2, i) {
-  let returnedIndex;
+  console.log("playOneRoundWithTwoHumans");
 
+  let returnedIndex;
   // Turn Player 1
   if (i % 2 === 0) {
     gameFront.setInfoTable(`${player1.getPlayerName()}, take your shot.`);
@@ -209,14 +212,17 @@ async function playOneRoundWithTwoHumans(player1, player2, i) {
       gameFront.makeASnappyComment(
         "Waste no ammunition, Admiral, you already shot at that spot."
       );
+      let commentator = document.querySelector(".gameComments");
+      gameFront.setInfoTable(
+        "Waste no ammunition, Admiral, you already shot at that spot."
+      );
       return false;
-    }
+    } else gameFront.makeASnappyComment("encourage");
 
     // function for shot fired invoked
     let comment = player2.getPlayerGameBoard().receiveAttack(coordinates);
     gameFront.makeASnappyComment(comment);
     if (!(player1.isHuman() && player2.isHuman())) {
-      console.log("in update player table");
       gameFront.updatePlayerTable(
         "player2",
         returnedIndex,
@@ -224,7 +230,7 @@ async function playOneRoundWithTwoHumans(player1, player2, i) {
       );
     }
 
-    // case of 2 human players: store hits on opposition board
+    //   store hits on opposition board
     if (player1.isHuman() === true && player2.isHuman() == true) {
       player1
         .getOppositionGameBoard()
@@ -239,10 +245,11 @@ async function playOneRoundWithTwoHumans(player1, player2, i) {
         "Waste no ammunition, Admiral, you already shot at that area."
       );
       return false;
-    }
+    } else gameFront.makeASnappyComment("encourage");
 
     let comment = player1.getPlayerGameBoard().receiveAttack(coordinates);
     gameFront.makeASnappyComment(comment);
+    setTimeout(() => {}, 2000);
     if (!(player1.isHuman() === true && player2.isHuman() == true)) {
       gameFront.updatePlayerTable(
         "player1",
@@ -250,13 +257,14 @@ async function playOneRoundWithTwoHumans(player1, player2, i) {
         player1.getPlayerGameBoard().getFieldStatus(coordinates)
       );
     }
-    // case of 2 human players: store hits on opposition board
+    //   store hits on opposition board
     if (player1.isHuman() === true && player2.isHuman() == true) {
       player2
         .getOppositionGameBoard()
         .updateOppositionBoard(status, coordinates);
     }
   }
+
   return true;
 }
 

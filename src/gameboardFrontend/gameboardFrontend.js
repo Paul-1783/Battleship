@@ -265,7 +265,7 @@ let gameFront = (function () {
       "afterbegin",
       `<form action="" method="dialog" id="nextMove">
             <p>
-              You turn, Admiral ${player.getPlayerName()} . 
+              Your turn, ${player.getPlayerName()} . 
              </p>
             <menu>
                  <button class="submitDialog">Continue to Game Board Screen</button>
@@ -356,7 +356,7 @@ let gameFront = (function () {
   }
 
   function setInfoTable(info) {
-    let gameInfoHeader = document.querySelector(".gameInfo"); ///////////////////
+    let gameInfoHeader = document.querySelector(".gameInfo");
     gameInfoHeader.innerText = info;
   }
 
@@ -374,8 +374,20 @@ let gameFront = (function () {
   }
 
   function makeASnappyComment(comment) {
-    let commentator = document.querySelector(".gameComments"); ///////////////////
+    console.log("comment ", comment);
+    let commentator = document.querySelector(".gameComments");
+
+    if (comment == "encourage") {
+      let indexOfEncouragement = Math.floor(Math.random() * 3).toString();
+      indexOfEncouragement == 0
+        ? (comment = `give them as good as you got!`)
+        : indexOfEncouragement == 1
+        ? (comment = `All guns blazing!`)
+        : (comment = `Another round of this dreadful game, drown me.`);
+    }
+
     commentator.innerText = comment;
+    console.log("comment after commentator ", commentator);
   }
 
   function changeStartButton() {
