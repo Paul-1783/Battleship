@@ -14,7 +14,7 @@ export default function Ship(s) {
       return 3;
     } else if (s === "destroyer") {
       return 2;
-    }
+    } else return 0;
   }
 
   function hit() {
@@ -34,5 +34,5 @@ export default function Ship(s) {
     return shipClass;
   }
 
-  return { hit, isSunk, getLength, getShipClass };
+  return { hit, isSunk, getLength, getShipClass, getShipLength };
 }

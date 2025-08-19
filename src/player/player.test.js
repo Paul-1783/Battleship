@@ -10,11 +10,11 @@ describe("checks machine/human player functionality with 10 x 10 square gameboar
 
   test("should return the player type 'real'", () => {
     let testPlayer = Player(false);
-    expect(testPlayer.getTypeOfPlayer()).toBe("real");
+    expect(testPlayer.isHuman()).toBe("real");
   });
 
   test("should return the player type 'computer'", () => {
     let testPlayer = Player(true);
-    expect(testPlayer.getTypeOfPlayer()).toBe("computer");
+    expect(testPlayer.isHuman()).toBe("computer");
   });
 });

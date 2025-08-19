@@ -192,15 +192,6 @@ let gameBoard = () => {
   function emptyGameBoard() {
     fleet.splice(0, fleet.length);
     fleet = [];
-    // gameBoardPositions.splice(0, gameBoardPositions.length);
-    // gameBoardPositions = getGameBoardPositions();
-    // let i = 0;
-    // while (i < 10) {
-    //   for (let d = 0; d < 10; ++d) {
-    //     console.log("lalal ", gameBoardPositions);
-    //   }
-    //   ++i;
-    // }
     let i = 0;
     while (i < 10) {
       for (let d = 0; d < 10; ++d) {
@@ -209,6 +200,13 @@ let gameBoard = () => {
       }
       ++i;
     }
+  }
+
+  function updateOppositionBoard(comment, coordinates) {
+    if (comment == "occupied")
+      gameBoardPositions[coordinates[0]][coordinates[1]].fieldStatus = "hit";
+    else
+      gameBoardPositions[coordinates[0]][coordinates[1]].fieldStatus = "miss";
   }
 
   return {
@@ -221,6 +219,7 @@ let gameBoard = () => {
     findFreeCoordinates,
     getGameBoardPositions,
     emptyGameBoard,
+    updateOppositionBoard,
   };
 };
 
