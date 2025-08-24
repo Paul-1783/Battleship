@@ -139,6 +139,8 @@ async function playTheGameWithTwoHumans(player1, player2) {
       true
     );
 
+    gameFront.setInfoTable(gameFront.makeASnappyComment("encourage"));
+
     gameFront.hideStartButton();
 
     const listOfButtonNodesPlayer1 = gameFront.getBoardPlayer1().childNodes;
@@ -148,16 +150,18 @@ async function playTheGameWithTwoHumans(player1, player2) {
     for (let button of listOfButtonNodesPlayer2) addButtonsToEventBus(button);
 
     //Start one round, wait for player pressing button
-    let buttonAlreadyPressed = await playOneRoundWithTwoHumans(
+    let [buttonAlreadyPressed, newComment] = await playOneRoundWithTwoHumans(
       player1,
       player2,
       i
     );
 
+    console.log("vor intermission bus ", newComment);
     addIntermissionButtonToEventBus(
       gameFront.showIntermediaryDialog(
         i % 2 == 0 ? player2 : player1,
-        gameFront.getBaseBody()
+        gameFront.getBaseBody(),
+        newComment
       )
     );
 
@@ -179,6 +183,7 @@ async function playTheGameWithTwoHumans(player1, player2) {
 async function playOneRoundWithTwoHumans(player1, player2, i) {
   console.log("playOneRoundWithTwoHumans");
 
+  let comment = "";
   let returnedIndex;
   // Turn Player 1
   if (i % 2 === 0) {
@@ -203,27 +208,17 @@ async function playOneRoundWithTwoHumans(player1, player2, i) {
     }
   }
 
-  console.log(
-    i % 2 === 0
-      ? `${player1.getPlayerName()} returnedINdex:`
-      : `${player2.getPlayerName()} returnedIndex: `,
-    returnedIndex
-  );
-
   const coordinates = getCoordinates(returnedIndex);
-
-  console.log(" coordinates: ", coordinates);
 
   // Turn Player 1
   if (i % 2 === 0) {
     let status = player2.getPlayerGameBoard().getFieldStatus(coordinates);
     if (status === "hit" || status === "miss") {
       return false;
-    } else gameFront.makeASnappyComment("encourage");
+    }
 
     // function for shot fired invoked
-    let comment = player2.getPlayerGameBoard().receiveAttack(coordinates);
-    gameFront.makeASnappyComment(comment);
+    comment = player2.getPlayerGameBoard().receiveAttack(coordinates);
     if (!(player1.isHuman() && player2.isHuman())) {
       gameFront.updatePlayerTable(
         "player2",
@@ -249,11 +244,7 @@ async function playOneRoundWithTwoHumans(player1, player2, i) {
       return false;
     } else gameFront.makeASnappyComment("encourage");
 
-    let comment = player1.getPlayerGameBoard().receiveAttack(coordinates);
-    console.log("player 2 comment ", comment);
-    setTimeout(() => {
-      gameFront.makeASnappyComment(comment);
-    }, 2000);
+    comment = player1.getPlayerGameBoard().receiveAttack(coordinates);
     if (!(player1.isHuman() === true && player2.isHuman() == true)) {
       gameFront.updatePlayerTable(
         "player1",
@@ -269,7 +260,7 @@ async function playOneRoundWithTwoHumans(player1, player2, i) {
     }
   }
 
-  return true;
+  return [true, comment];
 }
 
 function addButtonsToEventBus(field) {

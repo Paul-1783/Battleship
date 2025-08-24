@@ -77,23 +77,19 @@ let gameStart = (function () {
       compartments.forEach((compartment) => {
         compartment.addEventListener("mousedown", (event) => {
           compartmentIndex = event.target.classList[1];
-          console.log("compartmentIndex: ", compartmentIndex);
         });
       });
 
       ship.addEventListener(
         "dragstart",
         (event) => {
-          console.log("draggstart - event: ", event);
           draggedItem = ship;
-          console.log("draggstart: ", draggedItem);
           ship.classList.add("dragging");
         },
         true
       );
 
       ship.addEventListener("dragend", () => {
-        console.log("list in dragend: ", draggedItem.classList);
         draggedItem = null;
         compartmentIndex = null;
         ship.classList.remove("dragging");
@@ -127,13 +123,8 @@ let gameStart = (function () {
         let lengthCurrentShip = 0;
 
         try {
-          console.log("list in drop: ", draggedItem);
           lengthCurrentShip = Ship().getShipLength(draggedItem.classList[1]);
         } catch (e) {
-          console.log(
-            `then "${e}" happened. `,
-            gameFront.returnAllShipsFromFleetDesk(index)
-          );
           compartmentIndex = null;
           return;
         }
@@ -155,8 +146,6 @@ let gameStart = (function () {
             lengthCurrentShip -
             compartmentIndex -
             1;
-
-          console.log("start: ", startIndex, " endindex: ", endIndex);
 
           if (
             startIndex < 0 ||
@@ -248,7 +237,6 @@ let gameStart = (function () {
             "TwoHumans"
           );
         } else if (gameFront.checkFleetsReady(player2)) {
-          console.log("in");
           gameFront.hideStartButton();
           playTheGameWithTwoHumans(player1, player2);
         }

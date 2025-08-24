@@ -290,12 +290,14 @@ let gameFront = (function () {
     });
   }
 
-  function showIntermediaryDialog(player, baseBody) {
+  function showIntermediaryDialog(player, baseBody, comment) {
+    console.log(" in show ", comment);
     const newBoard = document.createElement("dialog");
     newBoard.classList.add("nextMove");
     newBoard.insertAdjacentHTML(
       "afterbegin",
       `<form action="" method="dialog" id="nextMove">
+            <p>${comment}</p>
             <p>
               Your turn, ${player.getPlayerName()} . 
              </p>
