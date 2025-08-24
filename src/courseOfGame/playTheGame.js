@@ -156,7 +156,6 @@ async function playTheGameWithTwoHumans(player1, player2) {
       i
     );
 
-    console.log("vor intermission bus ", newComment);
     addIntermissionButtonToEventBus(
       gameFront.showIntermediaryDialog(
         i % 2 == 0 ? player2 : player1,
@@ -181,8 +180,6 @@ async function playTheGameWithTwoHumans(player1, player2) {
 }
 
 async function playOneRoundWithTwoHumans(player1, player2, i) {
-  console.log("playOneRoundWithTwoHumans");
-
   let comment = "";
   let returnedIndex;
   // Turn Player 1

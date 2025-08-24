@@ -291,7 +291,6 @@ let gameFront = (function () {
   }
 
   function showIntermediaryDialog(player, baseBody, comment) {
-    console.log(" in show ", comment);
     const newBoard = document.createElement("dialog");
     newBoard.classList.add("nextMove");
     newBoard.insertAdjacentHTML(
@@ -418,12 +417,7 @@ let gameFront = (function () {
         ? (comment = `All guns blazing!`)
         : (comment = `Another round of this dreadful game, drown me.`);
     }
-    console.log(
-      " commentator inner text ",
-      commentator,
-      "  comment: ",
-      comment
-    );
+
     commentator.innerText = comment;
   }
 
