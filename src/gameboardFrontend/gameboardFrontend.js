@@ -410,12 +410,16 @@ let gameFront = (function () {
     let commentator = document.querySelector(".gameComments");
 
     if (comment == "encourage") {
-      let indexOfEncouragement = Math.floor(Math.random() * 3).toString();
+      let indexOfEncouragement = Math.floor(Math.random() * 5).toString();
       indexOfEncouragement == 0
         ? (comment = `give them as good as you got!`)
         : indexOfEncouragement == 1
         ? (comment = `All guns blazing!`)
-        : (comment = `Another round of this dreadful game, drown me.`);
+        : indexOfEncouragement == 2
+        ? (comment = `Another round of this dreadful game, drown me.`)
+        : indexOfEncouragement == 3
+        ? (comment = `All this violence, can't we discuss it.`)
+        : (comment = `Yolo and a buddle of rum.`);
     }
 
     commentator.innerText = comment;
